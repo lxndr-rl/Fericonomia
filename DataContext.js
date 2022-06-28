@@ -10,7 +10,7 @@ const Datos = {
       costo: 2.35,
       recursos: [
         {
-          nombre: "huevo",
+          nombre: "MPD 1",
           tipo: "materia",
           esCostoDirecto: true,
           unidad: "unidad",
@@ -18,7 +18,7 @@ const Datos = {
           unidadCosto: 0.1,
         },
         {
-          nombre: "Harina",
+          nombre: "MPD 2",
           tipo: "materia",
           esCostoDirecto: true,
           unidad: "kilo",
@@ -26,13 +26,52 @@ const Datos = {
           unidadCosto: 1.1,
         },
         {
-          nombre: "Batir los huevos",
+          nombre: "MPi 1",
+          tipo: "materia",
+          esCostoDirecto: false,
+          unidad: "kilo",
+          cantidad: 4,
+          unidadCosto: 1.5,
+        },
+        {
+          nombre: "MPi 2",
+          tipo: "materia",
+          esCostoDirecto: false,
+          unidad: "kilo",
+          cantidad: 3.33333333333,
+          unidadCosto: 1.6,
+        },
+        {
+          nombre: "Tarea 1",
           tipo: "manoObra",
           esCostoDirecto: true,
           unidad: "hora",
           cantidad: 2.5,
           personasCantidad: 2,
-          unidadCosto: 1.1,
+        },
+        {
+          nombre: "Tarea 2",
+          tipo: "manoObra",
+          esCostoDirecto: true,
+          unidad: "hora",
+          cantidad: 1,
+          personasCantidad: 3,
+        },
+        {
+          nombre: "Tarea 3",
+          tipo: "manoObra",
+          esCostoDirecto: false,
+          unidad: "hora",
+          cantidad: 25/60,
+          personasCantidad: 1,
+        },
+        {
+          nombre: "Tarea 4",
+          tipo: "manoObra",
+          esCostoDirecto: false,
+          unidad: "hora",
+          cantidad: 0.75,
+          personasCantidad: 2,
         },
       ]
     },
@@ -82,9 +121,15 @@ const Datos = {
           cantidad: 2.5,
           unidadCosto: 1.1,
         },
+        // TODO Desgloce de servicios básicos y otros costos indirectos como el arriendo
       ]
     },
-  ]
+  ],
+  parametros: {
+    sueldoMinimoHora: 425/240,
+    valorWattHora: 0.095/1000,
+    valorAgua_m3: 0, // TODO Poner valor correcto
+  },
 }
 
 
