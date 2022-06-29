@@ -3,7 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 
 export function Menu(props) {
     // TODO Esto es solo para dirigirse a un formulario, solo para probar
-    //props.navigation.navigate('Productos/verProducto', { name: 'Jane', idProducto: 1 })
+    //setTimeout(
+    //    () => props.navigation.navigate('Productos/verProducto', { name: 'Jane', idProducto: 1 })
+    //    , 1000
+    //)
 
     return (
         <View>
