@@ -1,8 +1,9 @@
 import { Button, Image } from 'react-native';
 import { StyleSheet, Text, View } from 'react-native';
+import { registerAsset } from 'react-native-web/dist/cjs/modules/AssetRegistry';
 
 import { DataContext } from '../DataContext';
-import { dolares } from '../Utils';
+import { calcularSubtotalRecurso, dolares } from '../Utils';
 
 
 export function Productos(props) {
@@ -75,12 +76,9 @@ export function ProductoVer(props) {
                           <td style={{ textAlign: "right" }}>
                             { dolares(recurso.unidadCosto) }
                           </td>
-                          <td style={{ textAlign: "right", fontWeight: 500 }}>{ dolares(
-                              recurso.unidadCosto * recurso.cantidad 
-                              * (recurso.personasCantidad ? recurso.personasCantidad : 1) 
-                              // TODO Agregar ltros valores que puedan totalizar
-                            ) 
-                          }</td>
+                          <td style={{ textAlign: "right", fontWeight: 500 }}>
+                            { dolares(calcularSubtotalRecurso(recurso)) }
+                          </td>
                         </tr>
                       ))
                     }
@@ -110,12 +108,9 @@ export function ProductoVer(props) {
                           <td style={{ textAlign: "right" }}>
                             { dolares(recurso.unidadCosto) }
                           </td>
-                          <td style={{ textAlign: "right", fontWeight: 500 }}>{ dolares(
-                              recurso.unidadCosto * recurso.cantidad 
-                              * (recurso.personasCantidad ? recurso.personasCantidad : 1) 
-                              // TODO Agregar ltros valores que puedan totalizar
-                            ) 
-                          }</td>
+                          <td style={{ textAlign: "right", fontWeight: 500 }}>
+                            { dolares(calcularSubtotalRecurso(recurso)) }
+                          </td>
                         </tr>
                       ))
                     }
@@ -145,12 +140,9 @@ export function ProductoVer(props) {
                           <td style={{ textAlign: "right" }}>
                             { `${recurso.personasCantidad} personas` }
                           </td>
-                          <td style={{ textAlign: "right", fontWeight: 500 }}>{ dolares(
-                              sueldoMinimoHora * recurso.cantidad 
-                              * (recurso.personasCantidad ? recurso.personasCantidad : 1) 
-                              // TODO Agregar ltros valores que puedan totalizar
-                            ) 
-                          }</td>
+                          <td style={{ textAlign: "right", fontWeight: 500 }}>
+                            { dolares(calcularSubtotalRecurso(recurso)) }
+                          </td>
                         </tr>
                       ))
                     }
@@ -180,12 +172,9 @@ export function ProductoVer(props) {
                           <td style={{ textAlign: "right" }}>
                             { `${recurso.personasCantidad} personas` }
                           </td>
-                          <td style={{ textAlign: "right", fontWeight: 500 }}>{ dolares(
-                              sueldoMinimoHora * recurso.cantidad 
-                              * (recurso.personasCantidad ? recurso.personasCantidad : 1) 
-                              // TODO Agregar ltros valores que puedan totalizar
-                            ) 
-                          }</td>
+                          <td style={{ textAlign: "right", fontWeight: 500 }}>
+                            { dolares(calcularSubtotalRecurso(recurso)) }
+                          </td>
                         </tr>
                       ))
                     }
@@ -201,27 +190,24 @@ export function ProductoVer(props) {
                   <table style={{ width: "100%" }}>
                     {/* TODO Desgloce de servicios básicos y otros costos indirectos como el arriendo */}
                     {producto.recursos
-                      .filter(recurso => recurso.tipo === "otros")
+                      .filter(recurso => recurso.tipo === "otro")
                       .map((recurso, i) => (
                         <tr key={i}>
                           <td>
                             { recurso.nombre }
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { Math.round(recurso.cantidad*100, 2)/100 }
+                            { recurso.cantidad ? Math.round(recurso.cantidad*100, 2)/100 : "" }
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { recurso.unidad }
+                            { recurso.unidad ? recurso.unidad : "" }
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { dolares(recurso.unidadCosto) }
+                            { recurso.unidadCosto ? dolares(recurso.unidadCosto) : "" }
                           </td>
-                          <td style={{ textAlign: "right", fontWeight: 500 }}>{ dolares(
-                              recurso.unidadCosto * recurso.cantidad 
-                              * (recurso.personasCantidad ? recurso.personasCantidad : 1) 
-                              // TODO Agregar ltros valores que puedan totalizar
-                            ) 
-                          }</td>
+                          <td style={{ textAlign: "right", fontWeight: 500 }}>
+                            { dolares(calcularSubtotalRecurso(recurso)) }
+                          </td>
                         </tr>
                       ))
                     }
