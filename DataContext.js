@@ -1,7 +1,7 @@
 import { createContext } from "react"
 
 
-const Datos = {
+export const Datos = {
   productos: [
     {
       id: 1,
@@ -73,6 +73,27 @@ const Datos = {
           cantidad: 0.75,
           personasCantidad: 2,
         },
+        {
+          nombre: "Consumo Agua 1",
+          tipo: "otro",
+          esCostoDirecto: false,
+          unidad: "litro",
+          cantidad: 150,
+        },
+        {
+          nombre: "Consumo Luz 1",
+          tipo: "otro",
+          esCostoDirecto: false,
+          unidad: "watt",
+          cantidad: 200,
+        },
+        {
+          nombre: "Arriendo",
+          tipo: "otro",
+          esCostoDirecto: false,
+          unidad: "mes",
+          costo: 350,
+        },
       ]
     },
     {
@@ -128,7 +149,7 @@ const Datos = {
   parametros: {
     sueldoMinimoHora: 425/240,
     valorWattHora: 0.095/1000,
-    valorAgua_m3: 0, // TODO Poner valor correcto
+    valorAgua_litro: 0.332/1000,
   },
 }
 
