@@ -1,0 +1,24 @@
+{
+    "personas": [
+        {
+            "nombres": "Ariel Alexander",
+            "apellidos": "Aguayo Alvarez"
+        }
+    ],
+    "mDirectos": [
+        {
+            "nombre": "Leche",
+            "cantidad": 3,
+            "unidad": "litros",
+            "precio": 0.85
+        }
+    ],
+    "mIndirectos": [
+        {
+            "nombre": "Servilletas",
+            "cantidad": 3,
+            "unidad": "unidades",
+            "precio": 0.50
+        }
+    ]
+}

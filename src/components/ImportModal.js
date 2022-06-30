@@ -53,12 +53,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    width: "50%",
-    height: "50%",
+    alignSelf: "center",
+    backgroundColor: "gray",
   },
   container: {
-    flex: 1,
     justifyContent: "center",
+    backgroundColor: "black",
+    alignSelf: "center",
+    backgroundColor: blur("1.5rem"),
   },
   button: {
     padding: 10,
