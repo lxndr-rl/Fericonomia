@@ -7,7 +7,9 @@ export const Datos = {
       id: 1,
       nombre: "Bolones de rojo",
       imagen_url: "https://www.laylita.com/recetas/wp-content/uploads/2012/03/Receta-del-bolon-de-verde-ecuatoriano-1024x683.jpg",
-      costo: 2.35,
+      costo: 2.35, // TODO Valor calculado. Se debe IGNORAR...
+      cantidad: 100,
+      margenUtilidad: 0.7,
       recursos: [
         {
           nombre: "MPD 1",
@@ -101,6 +103,8 @@ export const Datos = {
       nombre: "Bolones de verde",
       imagen_url: "https://www.laylita.com/recetas/wp-content/uploads/2012/03/Receta-del-bolon-de-verde-ecuatoriano-1024x683.jpg",
       costo: 2.35,
+      cantidad: 50,
+      margenUtilidad: 0.7,
       recursos: [
         {
           nombre: "huevo",
@@ -124,7 +128,8 @@ export const Datos = {
       id: 3,
       nombre: "Bolones de azul",
       imagen_url: "https://www.laylita.com/recetas/wp-content/uploads/2012/03/Receta-del-bolon-de-verde-ecuatoriano-1024x683.jpg",
-      costo: 2.35,
+      cantidad: 25,
+      margenUtilidad: 0.7,
       recursos: [
         {
           nombre: "huevo",

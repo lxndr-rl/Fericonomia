@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { registerAsset } from 'react-native-web/dist/cjs/modules/AssetRegistry';
 
 import { DataContext } from '../DataContext';
-import { calcularSubtotalRecurso, dolares } from '../Utils';
+import { calcularCostoTotal, calcularCostoTotalUnitario, calcularPrecioVenta, calcularSubtotalDirectoTotal, calcularSubtotalDirectoUnitario, calcularSubtotalIndirectoTotal, calcularSubtotalManoObraDirecta, calcularSubtotalManoObraIndirecta, calcularSubtotalMateriasDirectas, calcularSubtotalMateriasIndirectas, calcularSubtotalOtrosIndirectos, calcularSubtotalRecurso, dolares } from '../Utils';
 
 
 export function Productos(props) {
@@ -55,7 +55,10 @@ export function ProductoVer(props) {
               </tr>
 
               <tr>
-                <td colSpan={2} style={{ textAlign: "center" }}>Materias primas directas</td>
+                <td style={{ textAlign: "center" }}>Materias primas directas</td>
+                <td style={{ textAlign: "right" }}>
+                  { dolares(calcularSubtotalMateriasDirectas(producto.recursos)) }
+                </td>
               </tr>
               <tr>
                 <td colSpan={2}>
@@ -87,7 +90,10 @@ export function ProductoVer(props) {
               </tr>
               
               <tr>
-                <td colSpan={2} style={{ textAlign: "center" }}>Materias primas indirectas</td>
+                <td style={{ textAlign: "center" }}>Materias primas indirectas</td>
+                <td style={{ textAlign: "right" }}>
+                  { dolares(calcularSubtotalMateriasIndirectas(producto.recursos)) }
+                </td>
               </tr>
               <tr>
                 <td colSpan={2}>
@@ -119,7 +125,10 @@ export function ProductoVer(props) {
               </tr>
               
               <tr>
-                <td colSpan={2} style={{ textAlign: "center" }}>Mano de obra directa</td>
+                <td style={{ textAlign: "center" }}>Mano de obra directa</td>
+                <td style={{ textAlign: "right" }}>
+                  { dolares(calcularSubtotalManoObraDirecta(producto.recursos)) }
+                </td>
               </tr>
               <tr>
                 <td colSpan={2}>
@@ -151,7 +160,10 @@ export function ProductoVer(props) {
               </tr>
               
               <tr>
-                <td colSpan={2} style={{ textAlign: "center" }}>Mano de obra indirectas</td>
+                <td style={{ textAlign: "center" }}>Mano de obra indirectas</td>
+                <td style={{ textAlign: "right" }}>
+                  { dolares(calcularSubtotalManoObraIndirecta(producto.recursos)) }
+                </td>
               </tr>
               <tr>
                 <td colSpan={2}>
@@ -183,7 +195,10 @@ export function ProductoVer(props) {
               </tr>
               
               <tr>
-                <td colSpan={2} style={{ textAlign: "center" }}>Otros costos indirectos</td>
+                <td style={{ textAlign: "center" }}>Otros costos indirectos</td>
+                <td style={{ textAlign: "right" }}>
+                  { dolares(calcularSubtotalOtrosIndirectos(producto.recursos)) }
+                </td>
               </tr>
               <tr>
                 <td colSpan={2}>
@@ -222,18 +237,34 @@ export function ProductoVer(props) {
               }
               <tr>
                 <td style={{ textAlign: "left" }}>
-                  Costos directos
+                  Unidades producidas
                 </td>
                 <td style={{ textAlign: "right" }}>
-                  { producto.costo }
+                  { producto.cantidad }
                 </td>
               </tr>
               <tr>
                 <td style={{ textAlign: "left" }}>
-                  Costos indirectos
+                  Costos directos unitarios
                 </td>
                 <td style={{ textAlign: "right" }}>
-                  { producto.costo }
+                  { dolares(calcularSubtotalDirectoUnitario(producto.recursos)) }
+                </td>
+              </tr>
+              <tr>
+                <td style={{ textAlign: "left" }}>
+                  Costos directos totales
+                </td>
+                <td style={{ textAlign: "right" }}>
+                  { dolares(calcularSubtotalDirectoTotal(producto)) }
+                </td>
+              </tr>
+              <tr>
+                <td style={{ textAlign: "left" }}>
+                  Costos indirectos totales
+                </td>
+                <td style={{ textAlign: "right" }}>
+                  { dolares(calcularSubtotalIndirectoTotal(producto.recursos)) }
                 </td>
               </tr>
               <tr>
@@ -241,7 +272,15 @@ export function ProductoVer(props) {
                   Costos totales
                 </td>
                 <td style={{ textAlign: "right" }}>
-                  { producto.costo }
+                  { dolares(calcularCostoTotal(producto)) }
+                </td>
+              </tr>
+              <tr>
+                <td style={{ textAlign: "left" }}>
+                  Costos totales unitarios
+                </td>
+                <td style={{ textAlign: "right" }}>
+                  { dolares(calcularCostoTotalUnitario(producto)) }
                 </td>
               </tr>
               <tr>
@@ -249,7 +288,7 @@ export function ProductoVer(props) {
                   Precio de venta
                 </td>
                 <td style={{ textAlign: "right" }}>
-                  { producto.costo*1.7 }
+                  { dolares(calcularPrecioVenta(producto)) }
                 </td>
               </tr>
             </table>
