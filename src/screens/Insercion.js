@@ -51,9 +51,10 @@ const Insercion = ({ navigation }) => {
     }
     let personas = [];
     for (let j = 1; j <= i; j++) {
+      console.log(`${j} Persona`);
       personas.push(
         <TextInput
-          key={j}
+          key={`ti-${j}-persona`}
           style={styles.input}
           placeholder={`Ingrese los Nombres de la Persona ${j}`}
           placeholderTextColor={"gray"}
@@ -70,16 +71,17 @@ const Insercion = ({ navigation }) => {
     }
     let materiales = [];
     for (let j = 1; j <= i; j++) {
+      console.log(`${j} MaterialDirecto`);
       materiales.push(
         <View style={styles.rowView}>
           <TextInput
-            key={j}
+            key={`ti-${j}-mDirecto`}
             style={styles.inputMaterial}
             placeholder={`Nombre del Material ${j}`}
             placeholderTextColor={"gray"}
           />
           <InputSpinner
-            key={j}
+            key={`is-${j}-mDirecto`}
             max={100}
             min={0}
             step={1}
@@ -94,7 +96,7 @@ const Insercion = ({ navigation }) => {
             buttonStyle={{ width: 20, height: 20 }}
           />
           <Picker
-            key={j}
+            key={`p-${j}-mDirecto`}
             onValueChange={(itemValue, itemIndex) => console.log(itemValue)}
           >
             <Picker.Item label="Litros (l)" value="java" />
@@ -113,16 +115,17 @@ const Insercion = ({ navigation }) => {
     }
     let materiales = [];
     for (let j = 1; j <= i; j++) {
+      console.log(`${j} MaterialIndirecto`);
       materiales.push(
         <View style={styles.rowView}>
           <TextInput
-            key={j}
+            key={`ti-${j}-mIndirecto`}
             style={styles.inputMaterial}
             placeholder={`Nombre del Material ${j}`}
             placeholderTextColor={"gray"}
           />
           <InputSpinner
-            key={j}
+            key={`is-${j}-mIndirecto`}
             max={100}
             min={0}
             step={1}
@@ -137,7 +140,7 @@ const Insercion = ({ navigation }) => {
             buttonStyle={{ width: 20, height: 20 }}
           />
           <Picker
-            key={j}
+            key={`p-${j}-mIndirecto`}
             onValueChange={(itemValue, itemIndex) => console.log(itemValue)}
           >
             <Picker.Item label="Litros (l)" value="java" />
@@ -172,16 +175,20 @@ const Insercion = ({ navigation }) => {
                     setCantidadPersonas(cantidadPersonas - 1);
                   }}
                 >
-                  <FontAwesome5 name="minus" size={20} color="black" />
+                  <Text>
+                    <FontAwesome5 name="minus" size={20} color="black" />
+                  </Text>
                 </TouchableOpacity>
-                <Text style={styles.text}>Personas Involucradas</Text>{" "}
+                <Text style={styles.text}>Personas Involucradas</Text>
                 <TouchableOpacity
                   style={styles.buttonAD}
                   onPress={() => {
                     setCantidadPersonas(cantidadPersonas + 1);
                   }}
                 >
-                  <FontAwesome5 name="plus" size={20} color="black" />
+                  <Text>
+                    <FontAwesome5 name="plus" size={20} color="black" />
+                  </Text>
                 </TouchableOpacity>
               </View>
               {PersonasFields(cantidadPersonas)}
@@ -196,7 +203,9 @@ const Insercion = ({ navigation }) => {
                     );
                   }}
                 >
-                  <FontAwesome5 name="minus" size={20} color="black" />
+                  <Text>
+                    <FontAwesome5 name="minus" size={20} color="black" />
+                  </Text>
                 </TouchableOpacity>
                 <Text style={styles.text}>Materiales Directos</Text>
                 <TouchableOpacity
@@ -207,7 +216,9 @@ const Insercion = ({ navigation }) => {
                     );
                   }}
                 >
-                  <FontAwesome5 name="plus" size={20} color="black" />
+                  <Text>
+                    <FontAwesome5 name="plus" size={20} color="black" />
+                  </Text>
                 </TouchableOpacity>
               </View>
               <View>
@@ -224,7 +235,9 @@ const Insercion = ({ navigation }) => {
                     );
                   }}
                 >
-                  <FontAwesome5 name="minus" size={20} color="black" />
+                  <Text>
+                    <FontAwesome5 name="minus" size={20} color="black" />
+                  </Text>
                 </TouchableOpacity>
                 <Text style={styles.text}>Materiales Indirectos</Text>
                 <TouchableOpacity
@@ -235,7 +248,9 @@ const Insercion = ({ navigation }) => {
                     );
                   }}
                 >
-                  <FontAwesome5 name="plus" size={20} color="black" />
+                  <Text>
+                    <FontAwesome5 name="plus" size={20} color="black" />
+                  </Text>
                 </TouchableOpacity>
               </View>
               <View>
@@ -257,7 +272,6 @@ const Insercion = ({ navigation }) => {
           </Modal.Footer>
         </Modal.Container>
       </Modal>
-      <Text>Insercion</Text>
     </View>
   );
 };
