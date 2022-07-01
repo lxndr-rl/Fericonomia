@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, Button } from "react-native";
+import { StyleSheet, View, Text, ScrollView } from "react-native";
 import RNModal from "react-native-modal";
 
 export const Modal = ({ isVisible = false, children, ...props }) => {
@@ -18,7 +18,7 @@ export const Modal = ({ isVisible = false, children, ...props }) => {
 };
 
 const ModalContainer = ({ children }) => (
-  <View style={styles.container}>{children}</View>
+  <ScrollView style={styles.container}>{children}</ScrollView>
 );
 
 const ModalHeader = ({ title }) => (
