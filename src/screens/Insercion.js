@@ -13,7 +13,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import InputSpinner from "react-native-input-spinner";
 import { Picker } from "@react-native-picker/picker";
 
-const Insercion = () => {
+const Insercion = ({ navigation }) => {
   const [already, setAlready] = useState(false);
   const [formsVisible, setFormsVisible] = useState(false);
   const [cantidadPersonas, setCantidadPersonas] = useState(1);
@@ -27,7 +27,10 @@ const Insercion = () => {
     mIndirectos: [],
   });
 
-  const handleModal = () => setFormsVisible(() => !formsVisible);
+  const handleModal = () => {
+    setFormsVisible(() => !formsVisible);
+    navigation.goBack();
+  };
 
   useEffect(() => {
     obtenerParametro("insertedData").then((data) => {
