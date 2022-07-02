@@ -1,6 +1,5 @@
 import { Button, Image } from 'react-native';
-import { StyleSheet, Text, View } from 'react-native';
-import { registerAsset } from 'react-native-web/dist/cjs/modules/AssetRegistry';
+import { Text, View } from 'react-native';
 
 import { DataContext } from '../DataContext';
 import { calcularCostoTotal, calcularCostoTotalUnitario, calcularPrecioVenta, calcularSubtotalDirectoTotal, calcularSubtotalDirectoUnitario, calcularSubtotalIndirectoTotal, calcularSubtotalManoObraDirecta, calcularSubtotalManoObraIndirecta, calcularSubtotalMateriasDirectas, calcularSubtotalMateriasIndirectas, calcularSubtotalOtrosIndirectos, calcularSubtotalRecurso, dolares } from '../Utils';
@@ -21,7 +20,7 @@ export function Productos(props) {
               <Text>{producto.nombre}</Text>
               <Image source={{ uri: producto.imagen_url }} style={{ width: 300, height: 200 }} />
               <Button
-                title={<Text>Costo: {producto.costo} | P.V.P. {producto.costo * 1.7}</Text>}
+                title={`Costo: ${producto.costo} | P.V.P. ${producto.costo * 1.7}`}
                 onPress={() =>
                   props.navigation.navigate('Productos/verProducto', { name: 'Jane', idProducto: producto.id })}
               />
@@ -46,7 +45,9 @@ export function ProductoVer(props) {
           return <View>
             <table>
               <tr>
-                <td colSpan={2} style={{ textAlign: "center" }}>{ producto.nombre }</td>
+                <td colSpan={2} style={{ textAlign: "center" }}>
+                  <Text>{ producto.nombre }</Text>
+                </td>
               </tr>
               <tr>
                 <td colSpan={2}>
@@ -55,9 +56,11 @@ export function ProductoVer(props) {
               </tr>
 
               <tr>
-                <td style={{ textAlign: "center" }}>Materias primas directas</td>
+                <td style={{ textAlign: "center" }}>
+                  <Text>Materias primas directas</Text>
+                </td>
                 <td style={{ textAlign: "right" }}>
-                  { dolares(calcularSubtotalMateriasDirectas(producto.recursos)) }
+                  <Text>{ dolares(calcularSubtotalMateriasDirectas(producto.recursos)) }</Text>
                 </td>
               </tr>
               <tr>
@@ -68,19 +71,19 @@ export function ProductoVer(props) {
                       .map((recurso, i) => (
                         <tr key={i}>
                           <td>
-                            { recurso.nombre }
+                            <Text>{ recurso.nombre }</Text>
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { Math.round(recurso.cantidad*100, 2)/100 }
+                            <Text>{ Math.round(recurso.cantidad*100, 2)/100 }</Text>
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { recurso.unidad }
+                            <Text>{ recurso.unidad }</Text>
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { dolares(recurso.unidadCosto) }
+                            <Text>{ dolares(recurso.unidadCosto) }</Text>
                           </td>
                           <td style={{ textAlign: "right", fontWeight: 500 }}>
-                            { dolares(calcularSubtotalRecurso(recurso)) }
+                            <Text>{ dolares(calcularSubtotalRecurso(recurso)) }</Text>
                           </td>
                         </tr>
                       ))
@@ -90,9 +93,11 @@ export function ProductoVer(props) {
               </tr>
               
               <tr>
-                <td style={{ textAlign: "center" }}>Materias primas indirectas</td>
+                <td style={{ textAlign: "center" }}>
+                  <Text>Materias primas indirectas</Text>
+                </td>
                 <td style={{ textAlign: "right" }}>
-                  { dolares(calcularSubtotalMateriasIndirectas(producto.recursos)) }
+                  <Text>{ dolares(calcularSubtotalMateriasIndirectas(producto.recursos)) }</Text>
                 </td>
               </tr>
               <tr>
@@ -103,19 +108,19 @@ export function ProductoVer(props) {
                       .map((recurso, i) => (
                         <tr key={i}>
                           <td>
-                            { recurso.nombre }
+                            <Text>{ recurso.nombre }</Text>
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { Math.round(recurso.cantidad*100, 2)/100 }
+                            <Text>{ Math.round(recurso.cantidad*100, 2)/100 }</Text>
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { recurso.unidad }
+                            <Text>{ recurso.unidad }</Text>
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { dolares(recurso.unidadCosto) }
+                            <Text>{ dolares(recurso.unidadCosto) }</Text>
                           </td>
                           <td style={{ textAlign: "right", fontWeight: 500 }}>
-                            { dolares(calcularSubtotalRecurso(recurso)) }
+                            <Text>{ dolares(calcularSubtotalRecurso(recurso)) }</Text>
                           </td>
                         </tr>
                       ))
@@ -125,9 +130,11 @@ export function ProductoVer(props) {
               </tr>
               
               <tr>
-                <td style={{ textAlign: "center" }}>Mano de obra directa</td>
+                <td style={{ textAlign: "center" }}>
+                  <Text>Mano de obra directa</Text>
+                </td>
                 <td style={{ textAlign: "right" }}>
-                  { dolares(calcularSubtotalManoObraDirecta(producto.recursos)) }
+                  <Text>{ dolares(calcularSubtotalManoObraDirecta(producto.recursos)) }</Text>
                 </td>
               </tr>
               <tr>
@@ -138,19 +145,19 @@ export function ProductoVer(props) {
                       .map((recurso, i) => (
                         <tr key={i}>
                           <td>
-                            { recurso.nombre }
+                            <Text>{ recurso.nombre }</Text>
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { Math.round(recurso.cantidad*100, 2)/100 }
+                            <Text>{ Math.round(recurso.cantidad*100, 2)/100 }</Text>
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { recurso.unidad }
+                            <Text>{ recurso.unidad }</Text>
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { `${recurso.personasCantidad} personas` }
+                            <Text>{ `${recurso.personasCantidad} personas` }</Text>
                           </td>
                           <td style={{ textAlign: "right", fontWeight: 500 }}>
-                            { dolares(calcularSubtotalRecurso(recurso)) }
+                            <Text>{ dolares(calcularSubtotalRecurso(recurso)) }</Text>
                           </td>
                         </tr>
                       ))
@@ -160,9 +167,11 @@ export function ProductoVer(props) {
               </tr>
               
               <tr>
-                <td style={{ textAlign: "center" }}>Mano de obra indirectas</td>
+                <td style={{ textAlign: "center" }}>
+                    <Text>Mano de obra indirectas</Text>
+                  </td>
                 <td style={{ textAlign: "right" }}>
-                  { dolares(calcularSubtotalManoObraIndirecta(producto.recursos)) }
+                  <Text>{ dolares(calcularSubtotalManoObraIndirecta(producto.recursos)) }</Text>
                 </td>
               </tr>
               <tr>
@@ -173,19 +182,19 @@ export function ProductoVer(props) {
                       .map((recurso, i) => (
                         <tr key={i}>
                           <td>
-                            { recurso.nombre }
+                            <Text>{ recurso.nombre }</Text>
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { Math.round(recurso.cantidad*100, 2)/100 }
+                            <Text>{ Math.round(recurso.cantidad*100, 2)/100 }</Text>
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { recurso.unidad }
+                            <Text>{ recurso.unidad }</Text>
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { `${recurso.personasCantidad} personas` }
+                            <Text>{ `${recurso.personasCantidad} personas` }</Text>
                           </td>
                           <td style={{ textAlign: "right", fontWeight: 500 }}>
-                            { dolares(calcularSubtotalRecurso(recurso)) }
+                            <Text>{ dolares(calcularSubtotalRecurso(recurso)) }</Text>
                           </td>
                         </tr>
                       ))
@@ -195,9 +204,11 @@ export function ProductoVer(props) {
               </tr>
               
               <tr>
-                <td style={{ textAlign: "center" }}>Otros costos indirectos</td>
+                <td style={{ textAlign: "center" }}>
+                  <Text>Otros costos indirectos</Text>
+                </td>
                 <td style={{ textAlign: "right" }}>
-                  { dolares(calcularSubtotalOtrosIndirectos(producto.recursos)) }
+                  <Text>{ dolares(calcularSubtotalOtrosIndirectos(producto.recursos)) }</Text>
                 </td>
               </tr>
               <tr>
@@ -209,19 +220,19 @@ export function ProductoVer(props) {
                       .map((recurso, i) => (
                         <tr key={i}>
                           <td>
-                            { recurso.nombre }
+                            <Text>{ recurso.nombre }</Text>
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { recurso.cantidad ? Math.round(recurso.cantidad*100, 2)/100 : "" }
+                            <Text>{ recurso.cantidad ? Math.round(recurso.cantidad*100, 2)/100 : "" }</Text>
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { recurso.unidad ? recurso.unidad : "" }
+                            <Text>{ recurso.unidad ? recurso.unidad : "" }</Text>
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            { recurso.unidadCosto ? dolares(recurso.unidadCosto) : "" }
+                            <Text>{ recurso.unidadCosto ? dolares(recurso.unidadCosto) : "" }</Text>
                           </td>
                           <td style={{ textAlign: "right", fontWeight: 500 }}>
-                            { dolares(calcularSubtotalRecurso(recurso)) }
+                            <Text>{ dolares(calcularSubtotalRecurso(recurso)) }</Text>
                           </td>
                         </tr>
                       ))
@@ -231,70 +242,72 @@ export function ProductoVer(props) {
               </tr>
               
               <tr>
-                <td colSpan={2} style={{ textAlign: "center" }}>Totales</td>
+                <td colSpan={2} style={{ textAlign: "center" }}>
+                  <Text>Totales</Text>
+                </td>
               </tr>
               {/* TODO Calcular subtotales y totales*/
               }
               <tr>
                 <td style={{ textAlign: "left" }}>
-                  Unidades producidas
+                  <Text>Unidades producidas</Text>
                 </td>
                 <td style={{ textAlign: "right" }}>
-                  { producto.cantidad }
+                  <Text>{ producto.cantidad }</Text>
                 </td>
               </tr>
               <tr>
                 <td style={{ textAlign: "left" }}>
-                  Costos directos unitarios
+                  <Text>Costos directos unitarios</Text>
                 </td>
                 <td style={{ textAlign: "right" }}>
-                  { dolares(calcularSubtotalDirectoUnitario(producto.recursos)) }
+                  <Text>{ dolares(calcularSubtotalDirectoUnitario(producto.recursos)) }</Text>
                 </td>
               </tr>
               <tr>
                 <td style={{ textAlign: "left" }}>
-                  Costos directos totales
+                  <Text>Costos directos totales</Text>
                 </td>
                 <td style={{ textAlign: "right" }}>
-                  { dolares(calcularSubtotalDirectoTotal(producto)) }
+                  <Text>{ dolares(calcularSubtotalDirectoTotal(producto)) }</Text>
                 </td>
               </tr>
               <tr>
                 <td style={{ textAlign: "left" }}>
-                  Costos indirectos totales
+                  <Text>Costos indirectos totales</Text>
                 </td>
                 <td style={{ textAlign: "right" }}>
-                  { dolares(calcularSubtotalIndirectoTotal(producto.recursos)) }
+                  <Text>{ dolares(calcularSubtotalIndirectoTotal(producto.recursos)) }</Text>
                 </td>
               </tr>
               <tr>
                 <td style={{ textAlign: "left" }}>
-                  Costos totales
+                  <Text>Costos totales</Text>
                 </td>
                 <td style={{ textAlign: "right" }}>
-                  { dolares(calcularCostoTotal(producto)) }
+                  <Text>{ dolares(calcularCostoTotal(producto)) }</Text>
                 </td>
               </tr>
               <tr>
                 <td style={{ textAlign: "left" }}>
-                  Costos totales unitarios
+                  <Text>Costos totales unitarios</Text>
                 </td>
                 <td style={{ textAlign: "right" }}>
-                  { dolares(calcularCostoTotalUnitario(producto)) }
+                  <Text>{ dolares(calcularCostoTotalUnitario(producto)) }</Text>
                 </td>
               </tr>
               <tr>
                 <td style={{ textAlign: "left" }}>
-                  Precio de venta
+                  <Text>Precio de venta</Text>
                 </td>
                 <td style={{ textAlign: "right" }}>
-                  { dolares(calcularPrecioVenta(producto)) }
+                  <Text>{ dolares(calcularPrecioVenta(producto)) }</Text>
                 </td>
               </tr>
             </table>
             
             <Button
-              title={<Text>Editar Producto</Text>}
+              title={"Editar Producto"}
               onPress={() =>
                 props.navigation.navigate('Productos/verProducto', { 
                   name: `Detalles de ${producto.nombre}`, idProducto: producto.id })}

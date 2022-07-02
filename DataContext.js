@@ -7,7 +7,7 @@ export const Datos = {
       id: 1,
       nombre: "Bolones de rojo",
       imagen_url: "https://www.laylita.com/recetas/wp-content/uploads/2012/03/Receta-del-bolon-de-verde-ecuatoriano-1024x683.jpg",
-      costo: 2.35, // TODO Valor calculado. Se debe IGNORAR...
+      costo: 2.35, /* TODO Valor calculado. Se debe IGNORAR... */
       cantidad: 100,
       margenUtilidad: 0.7,
       recursos: [
@@ -147,7 +147,7 @@ export const Datos = {
           cantidad: 2.5,
           unidadCosto: 1.1,
         },
-        // TODO Desgloce de servicios básicos y otros costos indirectos como el arriendo
+        /* TODO Desgloce de servicios básicos y otros costos indirectos como el arriendo */
       ]
     },
   ],

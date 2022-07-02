@@ -18,8 +18,6 @@ export const dolares = (cantidad, redondearDigitos=2) =>
  * @returns Number
  */
 export const calcularSubtotalRecurso = (recurso) => {
-    //const costoServicioBasico = calcularCostoServicioBásico(recurso)
-
     if (recurso.unidad === "watt") {
         return recurso.cantidad * Datos.parametros.valorWattHora
     }
@@ -36,7 +34,6 @@ export const calcularSubtotalRecurso = (recurso) => {
         return recurso.costo
     }
     return 0
-    // TODO Agregar otros valores que puedan totalizar
     }
 
 /**
@@ -234,8 +231,8 @@ export const calcularCostoTotalUnitario = (producto) =>
  */
 export const calcularPrecioVenta = (producto) =>
     calcularCostoTotalUnitario(producto) *(1 + producto.margenUtilidad)
-
-// TODO Subtotales de costos segú sea. Uno para cada tipo
-// - Directo: Mano obra, materias
-// - Indirecto: Mano obra, materias, otros
-
+/*
+ TODO Subtotales de costos segú sea. Uno para cada tipo
+ - Directo: Mano obra, materias
+ - Indirecto: Mano obra, materias, otros
+*/
