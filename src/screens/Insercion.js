@@ -139,6 +139,7 @@ const Insercion = ({ navigation }) => {
                 flexShrink: 0,
                 display: "block",
               }}
+              value={0}
             />
             <Text style={{
               fontWeight: "bold",
