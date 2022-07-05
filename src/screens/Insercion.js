@@ -12,6 +12,7 @@ import { obtenerParametro } from "../utils/";
 import { FontAwesome5 } from "@expo/vector-icons";
 import InputSpinner from "react-native-input-spinner";
 import { Picker } from "@react-native-picker/picker";
+import NumberFormat from "react-number-format";
 
 const Insercion = ({ navigation }) => {
   const [already, setAlready] = useState(false);
@@ -25,6 +26,10 @@ const Insercion = ({ navigation }) => {
     personas: [],
     mDirectos: [],
     mIndirectos: [],
+    mObraDirecta: [],
+    mObraIndirecta: [],
+    costosDirectos: [],
+    costosIndirectos: [],
   });
 
   const handleModal = () => {
@@ -73,36 +78,78 @@ const Insercion = ({ navigation }) => {
     for (let j = 1; j <= i; j++) {
       console.log(`${j} MaterialDirecto`);
       materiales.push(
-        <View style={styles.rowView}>
-          <TextInput
-            key={`ti-${j}-mDirecto`}
-            style={styles.inputMaterial}
-            placeholder={`Nombre del Material ${j}`}
-            placeholderTextColor={"gray"}
-          />
-          <InputSpinner
-            key={`is-${j}-mDirecto`}
-            max={100}
-            min={0}
-            step={1}
-            colorMax={"#f04048"}
-            colorMin={"#40c5f4"}
-            height={40}
-            width={100}
-            onChange={(num) => {
-              console.log(num);
-            }}
-            style={{ marginHorizontal: 10 }}
-            buttonStyle={{ width: 20, height: 20 }}
-          />
-          <Picker
-            key={`p-${j}-mDirecto`}
-            onValueChange={(itemValue, itemIndex) => console.log(itemValue)}
+        <View>
+          <View 
+            style={StyleSheet.compose(styles.rowView, { 
+              flexDirection: "row",
+              justifyContent: "space-around",
+            })}
           >
-            <Picker.Item label="Litros (l)" value="java" />
-            <Picker.Item label="Gramos" value="js" />
-            <Picker.Item label="Unidades" value="js" />
-          </Picker>
+            <TextInput
+              key={`ti-${j}-mDirecto`}
+              style={StyleSheet.compose(styles.inputMaterial, {
+                flexBasis: 240,
+                flexGrow: 1,
+                flexShrink: 0,
+              })}
+              placeholder={`Nombre del Material ${j}`}
+              placeholderTextColor={"gray"}
+            />
+            <InputSpinner
+              key={`is-${j}-mDirecto-cantidad`}
+              max={100}
+              min={0}
+              step={1}
+              type="real"
+              precision={2}
+              colorMax={"#f04048"}
+              colorMin={"#40c5f4"}
+              width={90}
+              onChange={(num) => {
+                console.log(num);
+              }}
+              buttonStyle={{ width: 20, height: 20 }}
+            />
+            <Picker
+              key={`p-${j}-mDirecto-Unidad`}
+              style={{
+                width: 90,
+              }}
+              onValueChange={(itemValue, itemIndex) => console.log(itemValue)}
+            >
+              <Picker.Item label="Litros (l)" value="java" />
+              <Picker.Item label="Gramos" value="js" />
+              <Picker.Item label="Unidades" value="js" />
+              <Picker.Item label="Libras" value="js" />
+              <Picker.Item label="Metros cubicos" value="js" />
+            </Picker>
+            <NumberFormat
+              key={`is-${j}-mDirecto-valor`}
+              decimalSeparator="."
+              decimalScale={2}
+              fixedDecimalScale
+              prefix="$ "
+              onChange={(event) => {
+                console.log(event.target.value);
+              }}
+              style={{
+                width: 90,
+                flexBasis: 90,
+                flexGrow: 0,
+                flexShrink: 0,
+                display: "block",
+              }}
+            />
+            <Text style={{
+              fontWeight: "bold",
+              width: 90,
+              flexBasis: 90,
+              flexGrow: 0,
+              flexShrink: 0,
+            }}>
+              $ 99.90
+            </Text>
+          </View>
         </View>
       );
     }
@@ -207,7 +254,15 @@ const Insercion = ({ navigation }) => {
                     <FontAwesome5 name="minus" size={20} color="black" />
                   </Text>
                 </TouchableOpacity>
-                <Text style={styles.text}>Materiales Directos</Text>
+                <Text 
+                  style={StyleSheet.compose(styles.text,
+                  {
+                    //flexBasis: "100%",
+                    flexSrink: 0,
+                  })}
+                >
+                  Materiales Directos
+                </Text>
                 <TouchableOpacity
                   style={styles.buttonAD}
                   onPress={() => {
@@ -299,7 +354,7 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   input: {
-    width: 300,
+    width: "100%",
     borderColor: "black",
     alignSelf: "center",
     height: 40,
@@ -313,11 +368,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   rowView: {
+    display: "flex",
+    flexWrap: "wrap",
     flexDirection: "row",
     alignSelf: "center",
+    width: "100%",
   },
   inputMaterial: {
-    width: 300,
+    //width: "100%",
     borderColor: "black",
     alignSelf: "center",
     height: 40,
