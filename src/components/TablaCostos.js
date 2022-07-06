@@ -79,19 +79,6 @@ export const TablaCostos = (props) => {
 			]
 		)
 	}
-
-	const state = {
-			tableHead: [
-				'Nombre', 'Cantidad', 'Unidad', 'Precio/Unidad', "Subtotal unotario", 
-				"Subtotal unotario"
-			],
-			tableData: [
-				['1', '2', '3', '4'],
-				['a', 'b', 'c', 'd'],
-				['1', '2', '3', '456\n789'],
-				['a', 'b', 'c', 'd']
-			]
-	}
 	
 	return (
 		<View style={styles.container}>
@@ -99,13 +86,7 @@ export const TablaCostos = (props) => {
 			<Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
 				<Row 
 					data={[
-						'Nombre', 'Cantidad',
-					]} 
-		     	style={styles.head} textStyle={styles.text}
-	  		/>
-				<Row 
-					data={[
-						'Precio/Unidad', "Subtotal unitario", "Subtotal"
+						'Nombre', 'Cantidad', 'Precio/Unidad', "Subtotal unitario", "Subtotal"
 					]} 
 			  	style={styles.head} textStyle={styles.text}	
 				/>
@@ -113,20 +94,39 @@ export const TablaCostos = (props) => {
 					recurso => (
 						<TableWrapper>
 							<Row 
-								data={
-									[
-										recurso.nombre,
-										`${recurso.cantidad} ${recurso.unidad}`,
-										dolares(recurso.precio),
-										dolares(calcularSubtotalRecurso(recurso)),
-										dolares(calcularSubtotalRecurso(recurso) * _datosProducto.cantidad),
-									]
-								}
+								data={[
+									<text>
+										{ recurso.nombre}
+									</text>,
+									<text>
+										{ `${recurso.cantidad} ${recurso.unidad}` }
+									</text>,
+									<text style={{ textAlign: "right" }}>
+										{ dolares(recurso.precio) }
+									</text>,
+									<text style={{ textAlign: "right" }}>
+										{ dolares(calcularSubtotalRecurso(recurso)) }
+									)</text>,
+									<text style={{ textAlign: "right" }}>
+										{ dolares(calcularSubtotalRecurso(recurso) * _datosProducto.cantidad) }
+									</text>,
+								]}
 								textStyle={styles.text}
 							/>
 						</TableWrapper>
 					)
 				)}
+				<Row 
+					data={[
+						'Sobtotal', '', '', "", 
+						<Text style={{ textAlign: "right" }}>
+							{ dolares(_datosProducto.mDirectos.reduce(
+								(anterior, actual) => anterior + calcularSubtotalRecurso(actual) * _datosProducto.cantidad, 0
+							)) }
+						</Text>
+					]} 
+			  	style={styles.head} textStyle={styles.text}	
+				/>
 			</Table>
 		</View>
 	)
