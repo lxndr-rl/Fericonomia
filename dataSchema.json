@@ -20,5 +20,33 @@
             "unidad": "unidades",
             "precio": 0.50
         }
+    ],
+    "mObraDirectos": [
+        {
+            "nombre": "Rellenar",
+            "cantidad": 3,
+            "unidad": "horas"
+        }
+    ],
+    "mObraIndirectos": [
+        {
+            "nombre": "Batir",
+            "cantidad": 3,
+            "unidad": "horas"
+        }
+    ],
+    "costosDirectos": [
+        {
+            "nombre": "Planckado",
+            "cantidad": 4000,
+            "unidad": "watt"
+        }
+    ],
+    "costosIndirectos": [
+        {
+            "nombre": "Lavado",
+            "cantidad": 15000,
+            "unidad": "Li"
+        }
     ]
 }
