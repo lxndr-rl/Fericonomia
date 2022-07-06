@@ -23,17 +23,6 @@ export default function App() {
           component={Insercion}
           options={{
             title: "Fericonomia - Inserción de Producto",
-            headerRight: () => (
-              <TouchableOpacity>
-                <Text
-                  style={{ fontWeight: "700", fontSize: 16, marginRight: 20 }}
-                >
-                  {<FontAwesome name="gears" size={20} color="black" />}
-                  {"\t"}
-                  Parametros
-                </Text>
-              </TouchableOpacity>
-            ),
           }}
         />
       </Stack.Navigator>

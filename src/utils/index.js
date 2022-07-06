@@ -13,7 +13,8 @@ export const anadirParametro = async (parametro, valor) => {
 export const obtenerParametro = async (parametro) => {
   try {
     const valor = await AsyncStorage.getItem(parametro);
-    return valor;
+    console.log(valor);
+    return JSON.stringify(valor);
   } catch (error) {
     console.log(error);
     return null;

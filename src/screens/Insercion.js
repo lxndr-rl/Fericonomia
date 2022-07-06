@@ -3,12 +3,11 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   TextInput,
   TouchableOpacity,
 } from "react-native";
 import { Modal } from "../components/Popup";
-import { obtenerParametro } from "../utils/";
+import { obtenerParametro, anadirParametro } from "../utils/";
 import { FontAwesome5 } from "@expo/vector-icons";
 import InputSpinner from "react-native-input-spinner";
 import { Picker } from "@react-native-picker/picker";
@@ -22,27 +21,33 @@ const Insercion = ({ navigation }) => {
   const [cantidadMaterialesIndirectos, setCantidadMaterialesIndirectos] =
     useState(1);
   const [insertedData, setInsertedData] = useState({
+    nombreProducto: "",
     personas: [],
-    mDirectos: [],
+    mDirectos: [
+      {
+        nombre: "",
+        cantidad: 0,
+        unidad: "",
+        precio: 0,
+      },
+    ],
     mIndirectos: [],
+    porcentajeUtil: 0,
   });
-
-  const handleModal = () => {
-    setFormsVisible(() => !formsVisible);
-    navigation.goBack();
-  };
 
   useEffect(() => {
-    obtenerParametro("insertedData").then((data) => {
-      if (data) {
-        setInsertedData(data);
+    (async () => {
+      const inserted = await obtenerParametro("insertedData");
+      console.log(inserted);
+      if (inserted) {
+        setInsertedData(inserted);
         setAlready(true);
       }
-    });
-    if (!already) {
-      setFormsVisible(true);
-    }
-  });
+      if (!already) {
+        setFormsVisible(true);
+      }
+    })();
+  }, []);
 
   const PersonasFields = (i) => {
     if (i <= 0) {
@@ -51,13 +56,17 @@ const Insercion = ({ navigation }) => {
     }
     let personas = [];
     for (let j = 1; j <= i; j++) {
-      console.log(`${j} Persona`);
       personas.push(
         <TextInput
           key={`ti-${j}-persona`}
           style={styles.input}
           placeholder={`Ingrese los Nombres de la Persona ${j}`}
           placeholderTextColor={"gray"}
+          onChangeText={(text) => {
+            let personas = insertedData.personas;
+            personas[j - 1] = text;
+            setInsertedData({ ...insertedData, personas });
+          }}
         />
       );
     }
@@ -70,8 +79,9 @@ const Insercion = ({ navigation }) => {
       i = 1;
     }
     let materiales = [];
+    let materialesDir = insertedData.mDirectos;
+
     for (let j = 1; j <= i; j++) {
-      console.log(`${j} MaterialDirecto`);
       materiales.push(
         <View style={styles.rowView}>
           <TextInput
@@ -79,29 +89,51 @@ const Insercion = ({ navigation }) => {
             style={styles.inputMaterial}
             placeholder={`Nombre del Material ${j}`}
             placeholderTextColor={"gray"}
+            onChangeText={(text) => {
+              try {
+                materialesDir[j - 1].nombre = text;
+                setInsertedData({ ...insertedData, mDirectos: materialesDir });
+              } catch {
+                materialesDir.push({
+                  nombre: text,
+                  cantidad: 0,
+                  unidad: "",
+                  precio: 0,
+                });
+                setInsertedData({ ...insertedData, mDirectos: materialesDir });
+              }
+            }}
           />
           <InputSpinner
             key={`is-${j}-mDirecto`}
-            max={100}
-            min={0}
-            step={1}
+            max={1000}
+            min={1}
+            step={0.1}
             colorMax={"#f04048"}
             colorMin={"#40c5f4"}
             height={40}
             width={100}
-            onChange={(num) => {
-              console.log(num);
-            }}
             style={{ marginHorizontal: 10 }}
             buttonStyle={{ width: 20, height: 20 }}
+            onChange={(value) => {
+              materialesDir[j - 1].cantidad = value;
+              setInsertedData({ ...insertedData, mDirectos: materialesDir });
+            }}
           />
           <Picker
             key={`p-${j}-mDirecto`}
-            onValueChange={(itemValue, itemIndex) => console.log(itemValue)}
+            style={{ height: 50, width: 100 }}
+            onValueChange={(itemValue, itemIndex) => {
+              materialesDir[j - 1].unidad = itemValue;
+              setInsertedData({ ...insertedData, mDirectos: materialesDir });
+            }}
           >
-            <Picker.Item label="Litros (l)" value="java" />
-            <Picker.Item label="Gramos" value="js" />
-            <Picker.Item label="Unidades" value="js" />
+            <Picker.Item label="Litros (l)" value="l" />
+            <Picker.Item label="Gramos (g)" value="g" />
+            <Picker.Item label="Unidades" value="u" />
+            <Picker.Item label="Libras (lb)" value="lb" />
+            <Picker.Item label="Kilos (kg)" value="kg" />
+            <Picker.Item label="Cm3 (cm3)" value="cm3" />
           </Picker>
         </View>
       );
@@ -114,8 +146,8 @@ const Insercion = ({ navigation }) => {
       i = 1;
     }
     let materiales = [];
+    let materialesInd = insertedData.mIndirectos;
     for (let j = 1; j <= i; j++) {
-      console.log(`${j} MaterialIndirecto`);
       materiales.push(
         <View style={styles.rowView}>
           <TextInput
@@ -123,6 +155,26 @@ const Insercion = ({ navigation }) => {
             style={styles.inputMaterial}
             placeholder={`Nombre del Material ${j}`}
             placeholderTextColor={"gray"}
+            onChangeText={(text) => {
+              try {
+                materialesInd[j - 1].nombre = text;
+                setInsertedData({
+                  ...insertedData,
+                  mIndirectos: materialesInd,
+                });
+              } catch {
+                materialesInd.push({
+                  nombre: text,
+                  cantidad: 0,
+                  unidad: "",
+                  precio: 0,
+                });
+                setInsertedData({
+                  ...insertedData,
+                  mIndirectos: materialesInd,
+                });
+              }
+            }}
           />
           <InputSpinner
             key={`is-${j}-mIndirecto`}
@@ -133,19 +185,26 @@ const Insercion = ({ navigation }) => {
             colorMin={"#40c5f4"}
             height={40}
             width={100}
-            onChange={(num) => {
-              console.log(num);
-            }}
             style={{ marginHorizontal: 10 }}
             buttonStyle={{ width: 20, height: 20 }}
+            onChange={(value) => {
+              materialesInd[j - 1].cantidad = value;
+              setInsertedData({ ...insertedData, mIndirectos: materialesInd });
+            }}
           />
           <Picker
             key={`p-${j}-mIndirecto`}
-            onValueChange={(itemValue, itemIndex) => console.log(itemValue)}
+            onValueChange={(itemValue, itemIndex) => {
+              materialesInd[j - 1].unidad = itemValue;
+              setInsertedData({ ...insertedData, mIndirectos: materialesInd });
+            }}
           >
-            <Picker.Item label="Litros (l)" value="java" />
-            <Picker.Item label="Gramos" value="js" />
-            <Picker.Item label="Unidades" value="s" />
+            <Picker.Item label="Litros (l)" value="l" />
+            <Picker.Item label="Gramos (g)" value="g" />
+            <Picker.Item label="Unidades" value="u" />
+            <Picker.Item label="Libras (lb)" value="lb" />
+            <Picker.Item label="Kilos (kg)" value="kg" />
+            <Picker.Item label="Cm3 (cm3)" value="cm3" />
           </Picker>
         </View>
       );
@@ -165,6 +224,9 @@ const Insercion = ({ navigation }) => {
                 style={styles.input}
                 placeholder={"Ingrese el Nombre del Producto"}
                 placeholderTextColor={"gray"}
+                onChangeText={(text) => {
+                  setInsertedData({ ...insertedData, nombreProducto: text });
+                }}
               />
             </View>
             <View style={{ margin: 20 }}>
@@ -179,7 +241,7 @@ const Insercion = ({ navigation }) => {
                     <FontAwesome5 name="minus" size={20} color="black" />
                   </Text>
                 </TouchableOpacity>
-                <Text style={styles.text}>Personas Involucradas</Text>
+                <Text style={styles.text}>Recursos Humanos</Text>
                 <TouchableOpacity
                   style={styles.buttonAD}
                   onPress={() => {
@@ -263,12 +325,36 @@ const Insercion = ({ navigation }) => {
                   placeholder={"Ingrese el Porcentaje de Utilidad"}
                   keyboardType={"numeric"}
                   placeholderTextColor={"gray"}
+                  onChangeText={(text) => {
+                    setInsertedData({
+                      ...insertedData,
+                      porcentajeUtil: text,
+                    });
+                  }}
                 />
               </View>
             </View>
           </Modal.Body>
           <Modal.Footer>
-            <Button title="Cancelar" onPress={handleModal} />
+            <View style={styles.rowView}>
+              <TouchableOpacity
+                style={styles.buttonCancel}
+                onPress={() => setFormsVisible(false)}
+              >
+                <Text style={styles.buttonText}>Cerrar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  setFormsVisible(false);
+                  alert("Proceso Creado");
+                  alert(JSON.stringify(insertedData));
+                  anadirParametro("insertedData", insertedData);
+                }}
+              >
+                <Text style={styles.buttonText}>Aceptar</Text>
+              </TouchableOpacity>
+            </View>
           </Modal.Footer>
         </Modal.Container>
       </Modal>
@@ -298,6 +384,10 @@ const styles = StyleSheet.create({
     height: 1,
     width: "80%",
   },
+  buttonText: {
+    color: "white",
+    fontSize: 20,
+  },
   input: {
     width: 300,
     borderColor: "black",
@@ -324,5 +414,21 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     paddingRight: 10,
     paddingLeft: 10,
+  },
+  buttonCancel: {
+    borderRadius: 50,
+    alignSelf: "center",
+    marginHorizontal: 10,
+    width: 100,
+    alignItems: "center",
+    backgroundColor: "red",
+  },
+  button: {
+    borderRadius: 50,
+    alignSelf: "center",
+    width: 100,
+    alignItems: "center",
+    marginHorizontal: 10,
+    backgroundColor: "green",
   },
 });
