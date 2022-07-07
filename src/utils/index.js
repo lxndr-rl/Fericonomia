@@ -35,8 +35,45 @@ export const dolares = (cantidad, redondearDigitos = 2) =>
  * }} recurso
  * @returns Number
  */
+export const calcularSubtotalMaterial = (recurso) => {
+  return recurso.precio * recurso.cantidad;
+};
+
+/**
+ * @param {{
+ *      tipo: String,
+ *      esCostoDirecto: Boolean,
+ *      unidad: String,
+ *      cantidad: Number,
+ *      unidadCosto: Number,
+ *      personasCantidad: Number,
+ *      costo: Number,
+ * }} recurso
+ * @returns Number
+ */
+export const calcularSubtotalManoObra = (recurso) => {
+  console.log({
+    calcularSubtotalManoObra: { recurso: recurso }
+  })
+  // TODO Obtener desde almacenamiento
+  const costoHora = 425/240
+  return costoHora * recurso.cantidad * recurso.cantidadPersonas
+};
+
+/**
+ * @param {{
+ *      tipo: String,
+ *      esCostoDirecto: Boolean,
+ *      unidad: String,
+ *      cantidad: Number,
+ *      unidadCosto: Number,
+ *      personasCantidad: Number,
+ *      costo: Number,
+ * }} recurso
+ * @returns Number
+ */
 export const calcularSubtotalRecurso = (recurso) => {
-  //const costoServicioBasico = calcularCostoServicioBásico(recurso)
+  return recurso.precio * recurso.cantidad;
 
   if (recurso.unidad === "watt") {
     return recurso.cantidad * obtenerParametro("valorWattHora");
@@ -52,13 +89,12 @@ export const calcularSubtotalRecurso = (recurso) => {
     );
   }
   if (recurso.tipo !== "otro" && !recurso.esDirecto) {
-    return recurso.unidadCosto * recurso.cantidad;
   }
   if (recurso.costo) {
     return recurso.costo;
   }
   return 0;
-  // TODO Agregar otros valores que puedan totalizar
+  // TODO Agregar múltiplos de conversión
 };
 
 /**
@@ -78,7 +114,7 @@ export const calcularSubtotalMateriasDirectas = (recursos) =>
   recursos
     .filter((recurso) => recurso.tipo === "materia" && recurso.esCostoDirecto)
     .reduce(
-      (anterior, actual) => anterior + calcularSubtotalRecurso(actual),
+      (anterior, actual) => anterior + calcularSubtotalMaterial(actual),
       0
     );
 
@@ -99,7 +135,7 @@ export const calcularSubtotalMateriasIndirectas = (recursos) =>
   recursos
     .filter((recurso) => recurso.tipo === "materia" && !recurso.esCostoDirecto)
     .reduce(
-      (anterior, actual) => anterior + calcularSubtotalRecurso(actual),
+      (anterior, actual) => anterior + calcularSubtotalMaterial(actual),
       0
     );
 
@@ -120,7 +156,7 @@ export const calcularSubtotalManoObraDirecta = (recursos) =>
   recursos
     .filter((recurso) => recurso.tipo === "manoObra" && recurso.esCostoDirecto)
     .reduce(
-      (anterior, actual) => anterior + calcularSubtotalRecurso(actual),
+      (anterior, actual) => anterior + calcularSubtotalMaterial(actual),
       0
     );
 
@@ -141,7 +177,7 @@ export const calcularSubtotalManoObraIndirecta = (recursos) =>
   recursos
     .filter((recurso) => recurso.tipo === "manoObra" && !recurso.esCostoDirecto)
     .reduce(
-      (anterior, actual) => anterior + calcularSubtotalRecurso(actual),
+      (anterior, actual) => anterior + calcularSubtotalMaterial(actual),
       0
     );
 
@@ -162,7 +198,7 @@ export const calcularSubtotalOtrosIndirectos = (recursos) =>
   recursos
     .filter((recurso) => recurso.tipo === "otro" && !recurso.esCostoDirecto)
     .reduce(
-      (anterior, actual) => anterior + calcularSubtotalRecurso(actual),
+      (anterior, actual) => anterior + calcularSubtotalMaterial(actual),
       0
     );
 

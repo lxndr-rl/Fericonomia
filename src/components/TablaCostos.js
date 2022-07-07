@@ -2,7 +2,7 @@ import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-ta
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { calcularSubtotalMateriasDirectas, calcularSubtotalRecurso, dolares } from '../utils';
+import { calcularSubtotalMateriasDirectas, calcularSubtotalMaterial, dolares, obtenerParametro, calcularSubtotalManoObra } from '../utils';
 //import { Table, Row, Rows } from 'react-native-table-component';
 
 export const TablaCostos = (props) => {
@@ -31,16 +31,17 @@ export const TablaCostos = (props) => {
     ],
     "mIndirectos": [
         {
-            "nombre": "Servilletas",
-            "cantidad": 3,
-            "unidad": "unidades",
-            "precio": 0.50
+					"nombre": "Servilletas",
+					"cantidad": 3,
+					"unidad": "unidades",
+					"precio": 0.50
         }
     ],
     "mObraDirectos": [
         {
             "nombre": "Rellenar",
             "cantidad": 3,
+            "cantidadPersonas": 1,
             "unidad": "horas"
         }
     ],
@@ -66,19 +67,7 @@ export const TablaCostos = (props) => {
         }
     ]
   }
-
-	const tablasDatos = {
-		mDirectos: _datosProducto.mDirectos.map(recurso => [
-				[ 
-					recurso.nombre,
-					recurso.cantidad,
-					recurso.unidad,
-					recurso.precio,
-					calcularSubtotalRecurso(recurso),
-				]
-			]
-		)
-	}
+	const sueldoMinimoHora = 425/240
 	
 	return (
 		<View style={styles.container}>
@@ -105,10 +94,10 @@ export const TablaCostos = (props) => {
 										{ dolares(recurso.precio) }
 									</text>,
 									<text style={{ textAlign: "right" }}>
-										{ dolares(calcularSubtotalRecurso(recurso)) }
-									)</text>,
+										{ dolares(calcularSubtotalMaterial(recurso)) }
+									</text>,
 									<text style={{ textAlign: "right" }}>
-										{ dolares(calcularSubtotalRecurso(recurso) * _datosProducto.cantidad) }
+										{ dolares(calcularSubtotalMaterial(recurso) * _datosProducto.cantidad) }
 									</text>,
 								]}
 								textStyle={styles.text}
@@ -121,11 +110,103 @@ export const TablaCostos = (props) => {
 						'Sobtotal', '', '', "", 
 						<Text style={{ textAlign: "right" }}>
 							{ dolares(_datosProducto.mDirectos.reduce(
-								(anterior, actual) => anterior + calcularSubtotalRecurso(actual) * _datosProducto.cantidad, 0
+								(anterior, actual) => anterior + calcularSubtotalMaterial(actual) * _datosProducto.cantidad, 0
 							)) }
 						</Text>
 					]} 
+			  	textStyle={styles.text}	
+				/>
+			</Table>
+			
+			<View><Text>Mano de Obra Directas</Text></View>
+			<Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
+				<Row 
+					data={[
+						'Nombre', 'Cantidad', 'Precio/Unidad', "Subtotal unitario", "Subtotal"
+					]} 
 			  	style={styles.head} textStyle={styles.text}	
+				/>
+				{_datosProducto.mObraDirectos.map(
+					recurso => (
+						<TableWrapper>
+							<Row 
+								data={[
+									<text>
+										{ recurso.nombre}
+									</text>,
+									<text>
+										{ `${recurso.cantidad} ${recurso.unidad}` }
+									</text>,
+									<text style={{ textAlign: "right" }}>
+										{ dolares(sueldoMinimoHora) }
+									</text>,
+									<text style={{ textAlign: "right" }}>
+										{/* dolares(calcularSubtotalManoObra(recurso)) */}
+										{ calcularSubtotalManoObra(recurso) }
+									</text>,
+									<text style={{ textAlign: "right" }}>
+										{/* dolares(calcularSubtotalManoObra(recurso) * _datosProducto.cantidad) */}
+									</text>,
+								]}
+								textStyle={styles.text}
+							/>
+						</TableWrapper>
+					)
+				)}
+				<Row 
+					data={[
+						'Sobtotal', '', '', "", 
+						<Text style={{ textAlign: "right" }}>
+							{ dolares(_datosProducto.mDirectos.reduce(
+								(anterior, actual) => anterior + calcularSubtotalManoObra(actual) * _datosProducto.cantidad, 0
+							)) }
+						</Text>
+					]} 
+			  	textStyle={styles.text}	
+				/>
+			</Table>
+
+			<View><Text>Materias indirectas</Text></View>
+			<Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
+				<Row 
+					data={[
+						'Nombre', 'Cantidad', 'Precio/Unidad', "Subtotal"
+					]} 
+			  	style={styles.head} textStyle={styles.text}	
+				/>
+				{_datosProducto.mDirectos.map(
+					recurso => (
+						<TableWrapper>
+							<Row 
+								data={[
+									<text>
+										{ recurso.nombre}
+									</text>,
+									<text>
+										{ `${recurso.cantidad} ${recurso.unidad}` }
+									</text>,
+									<text style={{ textAlign: "right" }}>
+										{ dolares(recurso.precio) }
+									</text>,
+									<text style={{ textAlign: "right" }}>
+										{ dolares(calcularSubtotalMaterial(recurso)) }
+									</text>,
+								]}
+								textStyle={styles.text}
+							/>
+						</TableWrapper>
+					)
+				)}
+				<Row 
+					data={[
+						'Sobtotal', '', '', 
+						<Text style={{ textAlign: "right" }}>
+							{ dolares(_datosProducto.mDirectos.reduce(
+								(anterior, actual) => anterior + calcularSubtotalMaterial(actual), 0
+							)) }
+						</Text>
+					]} 
+			  	textStyle={styles.text}	
 				/>
 			</Table>
 		</View>
