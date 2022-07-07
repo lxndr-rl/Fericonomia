@@ -135,6 +135,16 @@ const Insercion = ({ navigation }) => {
             <Picker.Item label="Kilos (kg)" value="kg" />
             <Picker.Item label="Cm3 (cm3)" value="cm3" />
           </Picker>
+          <TextInput
+            key={`ti2-${j}-mDirecto`}
+            style={styles.inputMaterial}
+            placeholder={`Precio del material ${j}`}
+            placeholderTextColor={"gray"}
+            onChangeText={(text) => {
+              materialesDir[j - 1].precio = text;
+              setInsertedData({ ...insertedData, mDirectos: materialesDir });
+            }}
+          />
         </View>
       );
     }
@@ -206,6 +216,16 @@ const Insercion = ({ navigation }) => {
             <Picker.Item label="Kilos (kg)" value="kg" />
             <Picker.Item label="Cm3 (cm3)" value="cm3" />
           </Picker>
+          <TextInput
+            key={`ti2-${j}-mIndirecto`}
+            style={styles.inputMaterial}
+            placeholder={`Precio del material ${j}`}
+            placeholderTextColor={"gray"}
+            onChangeText={(text) => {
+              materialesInd[j - 1].precio = text;
+              setInsertedData({ ...insertedData, mIndirectos: materialesInd });
+            }}
+          />
         </View>
       );
     }
