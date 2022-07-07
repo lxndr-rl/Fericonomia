@@ -1,26 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-export const anadirParametro = async (parametro, valor) => {
-  try {
-    await AsyncStorage.setItem(parametro, valor);
-    return true;
-  } catch (error) {
-    console.log(error);
-    return false;
-  }
-};
-
-export const obtenerParametro = async (parametro) => {
-  try {
-    const valor = await AsyncStorage.getItem(parametro);
-    console.log(valor);
-    return JSON.stringify(valor);
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-};
-
 export const dolares = (cantidad, redondearDigitos = 2) =>
   `$ ${cantidad.toFixed(redondearDigitos)}`;
 
@@ -40,14 +17,14 @@ export const calcularSubtotalRecurso = (recurso) => {
   //const costoServicioBasico = calcularCostoServicioBásico(recurso)
 
   if (recurso.unidad === "watt") {
-    return recurso.cantidad * obtenerParametro("valorWattHora");
+    return recurso.cantidad * sessionStorage.getItem("valorWattHora");
   }
   if (recurso.unidad === "litro") {
-    return recurso.cantidad * obtenerParametro("valorAguaLitro");
+    return recurso.cantidad * sessionStorage.getItem("valorAguaLitro");
   }
   if (recurso.tipo === "manoObra") {
     return (
-      obtenerParametro("sueldoMinimoHora") *
+      sessionStorage.getItem("sueldoMinimoHora") *
       recurso.cantidad *
       recurso.personasCantidad
     );

@@ -7,19 +7,21 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Modal } from "../components/Popup";
-import { obtenerParametro, anadirParametro } from "../utils/";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5, FontAwesome } from "@expo/vector-icons";
 import InputSpinner from "react-native-input-spinner";
 import { Picker } from "@react-native-picker/picker";
 
 const Insercion = ({ navigation }) => {
-  const [already, setAlready] = useState(false);
-  const [formsVisible, setFormsVisible] = useState(false);
+  const [formsVisible, setFormsVisible] = useState(true);
   const [cantidadPersonas, setCantidadPersonas] = useState(1);
   const [cantidadMaterialesDirectos, setCantidadMaterialesDirectos] =
     useState(1);
   const [cantidadMaterialesIndirectos, setCantidadMaterialesIndirectos] =
     useState(1);
+  const [sueldoMin, setSueldoMin] = useState(0);
+  const [valorWattHora, setValorWattHora] = useState(0);
+  const [valorAguaLitro, setValorAguaLitro] = useState(0);
+  const [configVisible, setConfigVisible] = useState(false);
   const [insertedData, setInsertedData] = useState({
     nombreProducto: "",
     personas: [],
@@ -31,21 +33,66 @@ const Insercion = ({ navigation }) => {
         precio: 0,
       },
     ],
-    mIndirectos: [],
-    porcentajeUtil: 0,
+    mIndirectos: [
+      {
+        nombre: "",
+        cantidad: 0,
+        unidad: "",
+        precio: 0,
+      },
+    ],
+    mObraDirectos: [
+      {
+        nombre: "",
+        cantidad: 0,
+        unidad: "horas",
+      },
+    ],
+    mObraIndirectos: [
+      {
+        nombre: "",
+        cantidad: 0,
+        unidad: "horas",
+      },
+    ],
+    costosDirecto: [
+      {
+        nombre: "",
+        cantidad: 0,
+        unidad: "watt",
+      },
+    ],
+    costosIndirectos: [
+      {
+        nombre: "",
+        cantidad: 0,
+        unidad: "watt",
+      },
+    ],
+    utilidad: 0,
   });
 
   useEffect(() => {
     (async () => {
-      const inserted = await obtenerParametro("insertedData");
-      console.log(inserted);
-      if (inserted) {
-        setInsertedData(inserted);
-        setAlready(true);
-      }
-      if (!already) {
-        setFormsVisible(true);
-      }
+      //añadir boton a la barra de navegacion
+      setSueldoMin(sessionStorage.getItem("sueldoMin"));
+      setValorWattHora(sessionStorage.getItem("valorWattHora"));
+      setValorAguaLitro(sessionStorage.getItem("valorAguaLitro"));
+      navigation.setOptions({
+        headerRight: () => (
+          <TouchableOpacity
+            style={{ margin: 10 }}
+            onPress={() => {
+              setConfigVisible(true);
+            }}
+          >
+            <Text style={styles.text}>
+              <FontAwesome name="gears" size={20} color="black" />
+              Configurar Parámetros
+            </Text>
+          </TouchableOpacity>
+        ),
+      });
     })();
   }, []);
 
@@ -63,9 +110,10 @@ const Insercion = ({ navigation }) => {
           placeholder={`Ingrese los Nombres de la Persona ${j}`}
           placeholderTextColor={"gray"}
           onChangeText={(text) => {
-            let personas = insertedData.personas;
-            personas[j - 1] = text;
-            setInsertedData({ ...insertedData, personas });
+            let personasn = insertedData.personas;
+            personasn[j - 1] = text;
+            console.log(personasn);
+            setInsertedData({ ...insertedData, personas: personasn });
           }}
         />
       );
@@ -79,7 +127,6 @@ const Insercion = ({ navigation }) => {
       i = 1;
     }
     let materiales = [];
-    let materialesDir = insertedData.mDirectos;
 
     for (let j = 1; j <= i; j++) {
       materiales.push(
@@ -90,9 +137,9 @@ const Insercion = ({ navigation }) => {
             placeholder={`Nombre del Material ${j}`}
             placeholderTextColor={"gray"}
             onChangeText={(text) => {
+              let materialesDir = insertedData.mDirectos;
               try {
                 materialesDir[j - 1].nombre = text;
-                setInsertedData({ ...insertedData, mDirectos: materialesDir });
               } catch {
                 materialesDir.push({
                   nombre: text,
@@ -100,8 +147,9 @@ const Insercion = ({ navigation }) => {
                   unidad: "",
                   precio: 0,
                 });
-                setInsertedData({ ...insertedData, mDirectos: materialesDir });
               }
+              console.log(materialesDir);
+              setInsertedData({ ...insertedData, mDirectos: materialesDir });
             }}
           />
           <InputSpinner
@@ -116,6 +164,7 @@ const Insercion = ({ navigation }) => {
             style={{ marginHorizontal: 10 }}
             buttonStyle={{ width: 20, height: 20 }}
             onChange={(value) => {
+              let materialesDir = insertedData.mDirectos;
               materialesDir[j - 1].cantidad = value;
               setInsertedData({ ...insertedData, mDirectos: materialesDir });
             }}
@@ -124,6 +173,7 @@ const Insercion = ({ navigation }) => {
             key={`p-${j}-mDirecto`}
             style={{ height: 50, width: 100 }}
             onValueChange={(itemValue, itemIndex) => {
+              let materialesDir = insertedData.mDirectos;
               materialesDir[j - 1].unidad = itemValue;
               setInsertedData({ ...insertedData, mDirectos: materialesDir });
             }}
@@ -141,6 +191,7 @@ const Insercion = ({ navigation }) => {
             placeholder={`Precio del material ${j}`}
             placeholderTextColor={"gray"}
             onChangeText={(text) => {
+              let materialesDir = insertedData.mDirectos;
               materialesDir[j - 1].precio = text;
               setInsertedData({ ...insertedData, mDirectos: materialesDir });
             }}
@@ -156,7 +207,6 @@ const Insercion = ({ navigation }) => {
       i = 1;
     }
     let materiales = [];
-    let materialesInd = insertedData.mIndirectos;
     for (let j = 1; j <= i; j++) {
       materiales.push(
         <View style={styles.rowView}>
@@ -166,12 +216,9 @@ const Insercion = ({ navigation }) => {
             placeholder={`Nombre del Material ${j}`}
             placeholderTextColor={"gray"}
             onChangeText={(text) => {
+              let materialesInd = insertedData.mIndirectos;
               try {
                 materialesInd[j - 1].nombre = text;
-                setInsertedData({
-                  ...insertedData,
-                  mIndirectos: materialesInd,
-                });
               } catch {
                 materialesInd.push({
                   nombre: text,
@@ -179,11 +226,11 @@ const Insercion = ({ navigation }) => {
                   unidad: "",
                   precio: 0,
                 });
-                setInsertedData({
-                  ...insertedData,
-                  mIndirectos: materialesInd,
-                });
               }
+              setInsertedData({
+                ...insertedData,
+                mIndirectos: materialesInd,
+              });
             }}
           />
           <InputSpinner
@@ -198,6 +245,7 @@ const Insercion = ({ navigation }) => {
             style={{ marginHorizontal: 10 }}
             buttonStyle={{ width: 20, height: 20 }}
             onChange={(value) => {
+              let materialesInd = insertedData.mIndirectos;
               materialesInd[j - 1].cantidad = value;
               setInsertedData({ ...insertedData, mIndirectos: materialesInd });
             }}
@@ -205,6 +253,7 @@ const Insercion = ({ navigation }) => {
           <Picker
             key={`p-${j}-mIndirecto`}
             onValueChange={(itemValue, itemIndex) => {
+              let materialesInd = insertedData.mIndirectos;
               materialesInd[j - 1].unidad = itemValue;
               setInsertedData({ ...insertedData, mIndirectos: materialesInd });
             }}
@@ -222,6 +271,7 @@ const Insercion = ({ navigation }) => {
             placeholder={`Precio del material ${j}`}
             placeholderTextColor={"gray"}
             onChangeText={(text) => {
+              let materialesInd = insertedData.mIndirectos;
               materialesInd[j - 1].precio = text;
               setInsertedData({ ...insertedData, mIndirectos: materialesInd });
             }}
@@ -230,6 +280,36 @@ const Insercion = ({ navigation }) => {
       );
     }
     return materiales;
+  };
+
+  const completarIngreso = () => {
+    let productoValido;
+    try {
+      productoValido = insertedData.nombreProducto.length > 0;
+    } catch {
+      productoValido = false;
+    }
+    let personaValida;
+    try {
+      personaValida =
+        insertedData.personas.length === 0 ||
+        !/^[a-zA-Z]+$/.test(insertedData.personas[0]);
+    } catch {
+      personaValida = false;
+    }
+    if (!productoValido) {
+      alert("Ingrese el nombre del producto");
+      return;
+    }
+
+    if (!personaValida) {
+      alert("Ingrese al menos un nombre válido de recursos humanos");
+      return;
+    }
+    setFormsVisible(false);
+    alert("Proceso Creado");
+    alert(JSON.stringify(insertedData));
+    sessionStorage.setItem("insertedData", JSON.stringify(insertedData));
   };
 
   return (
@@ -366,13 +446,77 @@ const Insercion = ({ navigation }) => {
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                  setFormsVisible(false);
-                  alert("Proceso Creado");
-                  alert(JSON.stringify(insertedData));
-                  anadirParametro("insertedData", insertedData);
+                  completarIngreso();
                 }}
               >
                 <Text style={styles.buttonText}>Aceptar</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal.Footer>
+        </Modal.Container>
+      </Modal>
+      <Modal isVisible={configVisible}>
+        <Modal.Container>
+          <Modal.Header title="Configuración de Parámetros del Sistema" />
+          <Modal.Body>
+            <View style={{ margin: 20 }}>
+              <Text style={styles.text}>Sueldo Mínimo x Hora</Text>
+              <TextInput
+                style={styles.input}
+                placeholder={"Ingrese el Sueldo Mínimo x Hora"}
+                keyboardType={"numeric"}
+                placeholderTextColor={"gray"}
+                value={sueldoMin}
+                onChangeText={(text) => {
+                  setSueldoMin(text);
+                }}
+              />
+            </View>
+            <View style={{ margin: 20 }}>
+              <Text style={styles.text}>Valor Watt x Hora</Text>
+              <TextInput
+                style={styles.input}
+                placeholder={"Ingrese el Valor Watt x Hora"}
+                keyboardType={"numeric"}
+                placeholderTextColor={"gray"}
+                value={valorWattHora}
+                onChangeText={(text) => {
+                  setValorWattHora(text);
+                }}
+              />
+            </View>
+            <View style={{ margin: 20 }}>
+              <Text style={styles.text}>Valor Agua x Litro</Text>
+              <TextInput
+                style={styles.input}
+                placeholder={"Ingrese el Valor de Agua x Litro"}
+                keyboardType={"numeric"}
+                placeholderTextColor={"gray"}
+                value={valorAguaLitro}
+                onChangeText={(text) => {
+                  setValorAguaLitro(text);
+                }}
+              />
+            </View>
+          </Modal.Body>
+          <Modal.Footer>
+            <View style={styles.rowView}>
+              <TouchableOpacity
+                style={styles.buttonCancel}
+                onPress={() => setConfigVisible(false)}
+              >
+                <Text style={styles.buttonText}>Cancelar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  sessionStorage.setItem("sueldoMin", sueldoMin);
+                  sessionStorage.setItem("valorWattHora", valorWattHora);
+                  sessionStorage.setItem("valorAguaLitro", valorAguaLitro);
+                  alert("Guardado");
+                }}
+              >
+                <Text style={styles.buttonText}>Guardar</Text>
               </TouchableOpacity>
             </View>
           </Modal.Footer>
