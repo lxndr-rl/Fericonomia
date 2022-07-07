@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { Modal } from "../components/Popup";
 import { FontAwesome5, FontAwesome } from "@expo/vector-icons";
@@ -449,7 +450,7 @@ const Insercion = ({ navigation }) => {
                   completarIngreso();
                 }}
               >
-                <Text style={styles.buttonText}>Aceptar</Text>
+                <Text style={styles.buttonText}>Continuar</Text>
               </TouchableOpacity>
             </View>
           </Modal.Footer>
@@ -553,7 +554,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   input: {
-    width: 300,
+    width: Dimensions.get("window").width < 800 ? 300 : 200,
     borderColor: "black",
     alignSelf: "center",
     height: 40,
@@ -567,11 +568,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   rowView: {
-    flexDirection: "row",
+    flexDirection: Dimensions.get("window").width < 800 ? "column" : "row",
     alignSelf: "center",
+    alignItems: "center",
+    alignContent: "center",
   },
   inputMaterial: {
-    width: 300,
+    width: Dimensions.get("window").width < 800 ? 300 : 200,
     borderColor: "black",
     alignSelf: "center",
     height: 40,
@@ -586,13 +589,14 @@ const styles = StyleSheet.create({
     width: 100,
     alignItems: "center",
     backgroundColor: "red",
+    margin: 10,
   },
   button: {
     borderRadius: 50,
     alignSelf: "center",
     width: 100,
     alignItems: "center",
-    marginHorizontal: 10,
     backgroundColor: "green",
+    margin: 10,
   },
 });
