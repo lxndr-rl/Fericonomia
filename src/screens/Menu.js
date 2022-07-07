@@ -1,12 +1,40 @@
-import React, { useState } from "react";
-import { SafeAreaView, TouchableOpacity, StyleSheet, Text } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  SafeAreaView,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Text,
+  View,
+  Dimensions,
+  Platform,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Modal } from "../components/Popup";
+const Width =
+  Platform.OS == "web"
+    ? Dimensions.get("window").width < 800
+      ? Dimensions.get("window").width
+      : Dimensions.get("window").width / 2.5
+    : Dimensions.get("window").width;
 
 const MenuScreen = ({ navigation }) => {
   const [importVisible, setImportVisible] = useState(false);
 
+  useEffect(() => {
+    (async () => {
+      if (!sessionStorage.getItem("valorWattHora")) {
+        sessionStorage.setItem("valorWattHora", 0.05);
+      }
+      if (!sessionStorage.getItem("valorAguaLitro")) {
+        sessionStorage.setItem("valorAguaLitro", 0.05);
+      }
+      if (!sessionStorage.getItem("sueldoMin")) {
+        sessionStorage.setItem("sueldoMin", 0.05);
+      }
+    })();
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <Modal isVisible={importVisible}>
@@ -58,6 +86,15 @@ const MenuScreen = ({ navigation }) => {
           </Modal.Footer>
         </Modal.Container>
       </Modal>
+
+      <View style={styles.rectangle}>
+        <View style={styles.mvContainer}>
+          <Text style={styles.mvText}>
+            PROCESO DE CÁLCULO DE COSTOS PARA LA ELABORACIÓN DE PRODUCTOS
+          </Text>
+        </View>
+        <Image source={require("../assets/logo.jpg")} style={styles.tinyLogo} />
+      </View>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
@@ -104,6 +141,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    backgroundColor: "#a5eea0",
   },
   button: {
     padding: 10,
@@ -115,5 +153,35 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     fontSize: 30,
     color: "white",
+  },
+  rectangle: {
+    margin: 7,
+    borderRadius: 20,
+    borderColor: "transparent",
+    borderWidth: 2,
+    width: Width - 10,
+    padding: 20,
+    alignSelf: "center",
+  },
+  mvContainer: {
+    marginTop: 20,
+    marginVertical: 15,
+    borderRadius: 10,
+  },
+  mvText: {
+    color: "#000",
+    textAlign: "center",
+    width: Width - 40,
+    fontWeight: "bold",
+    fontSize: 18,
+    marginRight: 10,
+  },
+  tinyLogo: {
+    width: 200,
+    height: 200,
+    padding: 20,
+    margin: 20,
+    alignSelf: "center",
+    borderRadius: "50%",
   },
 });

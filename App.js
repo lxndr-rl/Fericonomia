@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { TouchableOpacity, Text } from "react-native";
+import { View, Image } from "react-native";
 import Insercion from "./src/screens/Insercion";
 import Menu from "./src/screens/Menu";
 import { FontAwesome } from "@expo/vector-icons";
@@ -15,14 +15,22 @@ export default function App() {
           name="Menu"
           component={Menu}
           options={{
-            title: "Fericonomia - Inicio",
+            title: "Inicio",
+            headerRight: () => (
+              <View>
+                <Image
+                  source={require("./src/assets/uaeLogo.png")}
+                  style={{ width: 50, height: 50, marginRight: 10 }}
+                />
+              </View>
+            ),
           }}
         />
         <Stack.Screen
           name="Insercion"
           component={Insercion}
           options={{
-            title: "Fericonomia - Inserción de Producto",
+            title: "Inserción de Producto",
           }}
         />
       </Stack.Navigator>
