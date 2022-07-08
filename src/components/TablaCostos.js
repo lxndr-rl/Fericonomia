@@ -43,7 +43,7 @@ export const TablaCostos = (props) => {
     l: "litros",
     cm3: "cm cúbicos",
     h: "horas",
-    min: "munutos",
+    min: "minutos",
     w: "watts",
     u: "unidades",
   };
@@ -53,7 +53,9 @@ export const TablaCostos = (props) => {
   return (
     <View style={styles.container}>
       <View>
-        <Text>Materias Directas</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+          Materias Directas
+        </Text>
       </View>
       <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
         <Row
@@ -106,7 +108,9 @@ export const TablaCostos = (props) => {
       </Table>
 
       <View>
-        <Text>Mano de Obra Directas</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+          Mano de Obra Directas
+        </Text>
       </View>
       <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
         <Row
@@ -159,7 +163,9 @@ export const TablaCostos = (props) => {
       </Table>
 
       <View>
-        <Text>Materias indirectas</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+          Materias indirectas
+        </Text>
       </View>
       <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
         <Row
@@ -200,7 +206,9 @@ export const TablaCostos = (props) => {
       </Table>
 
       <View>
-        <Text>Mano de obra Indirecta</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+          Mano de obra Indirecta
+        </Text>
       </View>
       <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
         <Row
@@ -241,7 +249,9 @@ export const TablaCostos = (props) => {
       </Table>
 
       <View>
-        <Text>Sumatoria de costos</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+          Sumatoria de costos
+        </Text>
       </View>
       <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
         <Row
