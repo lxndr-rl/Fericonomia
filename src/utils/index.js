@@ -52,12 +52,9 @@ export const calcularSubtotalMaterial = (recurso) => {
  * @returns Number
  */
 export const calcularSubtotalManoObra = (recurso) => {
-  console.log({
-    calcularSubtotalManoObra: { recurso: recurso }
-  })
   // TODO Obtener desde almacenamiento
   const costoHora = 425/240
-  return costoHora * recurso.cantidad * recurso.cantidadPersonas
+  return costoHora * recurso.cantidad * (recurso.cantidadPersonas || 1)
 };
 
 /**
