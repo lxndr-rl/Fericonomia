@@ -31,7 +31,7 @@ const MenuScreen = ({ navigation }) => {
         sessionStorage.setItem("valorAguaLitro", 0.05);
       }
       if (!sessionStorage.getItem("sueldoMin")) {
-        sessionStorage.setItem("sueldoMin", 425 / 240);
+        sessionStorage.setItem("sueldoMin", 0.05);
       }
     })();
   }, []);
@@ -113,24 +113,26 @@ const MenuScreen = ({ navigation }) => {
           </Text>
         </LinearGradient>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          setImportVisible(true);
-        }}
-      >
-        <LinearGradient
-          colors={["#4ECDC4", "#556270"]}
-          start={[0, 1]}
-          end={[1, 0]}
+      {false && (
+        <TouchableOpacity
           style={styles.button}
+          onPress={() => {
+            setImportVisible(true);
+          }}
         >
-          <Text style={styles.text}>
-            {<FontAwesome5 name="file-import" size={20} color="white" />}{" "}
-            Importar Datos
-          </Text>
-        </LinearGradient>
-      </TouchableOpacity>
+          <LinearGradient
+            colors={["#4ECDC4", "#556270"]}
+            start={[0, 1]}
+            end={[1, 0]}
+            style={styles.button}
+          >
+            <Text style={styles.text}>
+              {<FontAwesome5 name="file-import" size={20} color="white" />}{" "}
+              Importar Datos
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      )}
     </SafeAreaView>
   );
 };
