@@ -8,6 +8,7 @@ import {
   obtenerFactorConversion,
   calcularSubtotalServicioBasico,
 } from "../utils";
+import { Button } from "react-native-web";
 
 export const TablaCostos = (props) => {
   const _datosProducto = props.datosProducto;
@@ -456,6 +457,11 @@ export const TablaCostos = (props) => {
           textStyle={styles.text}
         />
       </Table>
+
+      <Button title={"Editar datos"}
+        onPress={() => props.setFormsVisible(true)}
+      >
+      </Button>
     </View>
   );
 };

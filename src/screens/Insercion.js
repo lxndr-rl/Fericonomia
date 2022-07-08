@@ -1024,7 +1024,8 @@ const Insercion = ({ navigation }) => {
           </Modal.Footer>
         </Modal.Container>
       </Modal>
-      {showTable && <TablaCostos datosProducto={insertedData} />}
+      {showTable 
+        && <TablaCostos datosProducto={insertedData} setFormsVisible={setFormsVisible} />}
     </View>
   );
 };
