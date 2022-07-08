@@ -31,7 +31,7 @@ const MenuScreen = ({ navigation }) => {
         sessionStorage.setItem("valorAguaLitro", 0.05);
       }
       if (!sessionStorage.getItem("sueldoMin")) {
-        sessionStorage.setItem("sueldoMin", 0.05);
+        sessionStorage.setItem("sueldoMin", 425 / 240);
       }
     })();
   }, []);

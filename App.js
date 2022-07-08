@@ -9,7 +9,6 @@ import { StatusBar } from "expo-status-bar";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-
   return (
     <NavigationContainer>
       <StatusBar style="dark" />
@@ -34,24 +33,6 @@ export default function App() {
           component={Insercion}
           options={{
             title: "Inserción de Producto",
-          }}
-        />
-        <Stack.Screen
-          name="TablaCostos"
-          component={TablaCostos}
-          options={{
-            title: "Fericonomia - Inserción de Producto",
-            headerRight: () => (
-              <TouchableOpacity>
-                <Text
-                  style={{ fontWeight: "700", fontSize: 16, marginRight: 20 }}
-                >
-                  {<FontAwesome name="gears" size={20} color="black" />}
-                  {"\t"}
-                  Parámetros
-                </Text>
-              </TouchableOpacity>
-            ),
           }}
         />
       </Stack.Navigator>

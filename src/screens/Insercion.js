@@ -11,6 +11,7 @@ import { Modal } from "../components/Popup";
 import { FontAwesome5, FontAwesome } from "@expo/vector-icons";
 import InputSpinner from "react-native-input-spinner";
 import { Picker } from "@react-native-picker/picker";
+import { TablaCostos } from "../components/TablaCostos";
 
 const Insercion = ({ navigation }) => {
   const [formsVisible, setFormsVisible] = useState(true);
@@ -29,6 +30,7 @@ const Insercion = ({ navigation }) => {
     useState(1);
   const [cantidadCostosDirectos, setCantidadCostosDirectos] = useState(1);
   const [cantidadCostosIndirectos, setCantidadCostosIndirectos] = useState(1);
+  const [showTable, setShowTable] = useState(false);
   const [insertedData, setInsertedData] = useState({
     nombreProducto: "",
     personas: [],
@@ -578,6 +580,7 @@ const Insercion = ({ navigation }) => {
   };
 
   const completarIngreso = () => {
+    console.log(insertedData);
     let productoValido;
     try {
       productoValido = insertedData.nombreProducto.length > 0;
@@ -587,7 +590,7 @@ const Insercion = ({ navigation }) => {
     let personaValida;
     try {
       personaValida =
-        insertedData.personas.length === 0 ||
+        insertedData.personas.length > 0 ||
         !/^[a-zA-Z]+$/.test(insertedData.personas[0]);
     } catch {
       personaValida = false;
@@ -595,7 +598,7 @@ const Insercion = ({ navigation }) => {
     let materDirValido;
     try {
       materDirValido =
-        insertedData.mObraDirectos.length === 0 ||
+        insertedData.mObraDirectos.length > 0 ||
         !/^[a-zA-Z]+$/.test(insertedData.mObraDirectos[0].nombre) ||
         insertedData.mObraDirectos[0].cantidad === 0 ||
         insertedData.mObraDirectos[0].precio === 0;
@@ -605,7 +608,7 @@ const Insercion = ({ navigation }) => {
     let materIndValido;
     try {
       materIndValido =
-        insertedData.mObraIndirectos.length === 0 ||
+        insertedData.mObraIndirectos.length > 0 ||
         !/^[a-zA-Z]+$/.test(insertedData.mObraIndirectos[0].nombre) ||
         insertedData.mObraIndirectos[0].cantidad === 0 ||
         insertedData.mObraIndirectos[0].precio === 0;
@@ -615,7 +618,7 @@ const Insercion = ({ navigation }) => {
     let costosDirValido;
     try {
       costosDirValido =
-        insertedData.costosDirecto.length === 0 ||
+        insertedData.costosDirecto.length > 0 ||
         !/^[a-zA-Z]+$/.test(insertedData.costosDirecto[0].nombre) ||
         insertedData.costosDirecto[0].cantidad === 0;
     } catch {
@@ -624,7 +627,7 @@ const Insercion = ({ navigation }) => {
     let costosIndValido;
     try {
       costosIndValido =
-        insertedData.costosIndirectos.length === 0 ||
+        insertedData.costosIndirectos.length > 0 ||
         !/^[a-zA-Z]+$/.test(insertedData.costosIndirectos[0].nombre) ||
         insertedData.costosIndirectos[0].cantidad === 0;
     } catch {
@@ -657,7 +660,7 @@ const Insercion = ({ navigation }) => {
       return;
     }
     setFormsVisible(false);
-    alert("Proceso Creado");
+    setShowTable(true);
     sessionStorage.setItem("insertedData", JSON.stringify(insertedData));
   };
 
@@ -994,6 +997,7 @@ const Insercion = ({ navigation }) => {
           </Modal.Footer>
         </Modal.Container>
       </Modal>
+      {showTable && <TablaCostos datosProducto={insertedData} />}
     </View>
   );
 };
