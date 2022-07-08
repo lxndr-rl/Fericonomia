@@ -2,7 +2,7 @@ import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-ta
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { calcularSubtotalMateriasDirectas, calcularSubtotalMaterial, dolares, obtenerParametro, calcularSubtotalManoObra } from '../utils';
+import { calcularSubtotalMateriasDirectas, calcularSubtotalMaterial, dolares, obtenerParametro, calcularSubtotalManoObra, obtenerFactorConversion } from '../utils';
 //import { Table, Row, Rows } from 'react-native-table-component';
 
 export const TablaCostos = (props) => {
@@ -20,13 +20,13 @@ export const TablaCostos = (props) => {
 			{
 				"nombre": "Leche",
 				"cantidad": 3,
-				"unidad": "litros",
+				"unidad": "l",
 				"precio": 0.85
 			},
 			{
 				"nombre": "Harina",
 				"cantidad": 2.6,
-				"unidad": "libras",
+				"unidad": "lb",
 				"precio": 1.05
 			},
     ],
@@ -34,7 +34,7 @@ export const TablaCostos = (props) => {
         {
 					"nombre": "Servilletas",
 					"cantidad": 3,
-					"unidad": "unidades",
+					"unidad": "u",
 					"precio": 0.50
         }
     ],
@@ -42,35 +42,21 @@ export const TablaCostos = (props) => {
         {
             "nombre": "Rellenar",
             "cantidad": 3,
-            "unidad": "horas"
+            "unidad": "h"
         },
         {
             "nombre": "Aplastar",
-            "cantidad": 2,
-            "unidad": "horas"
+            "cantidad": 45,
+            "unidad": "min"
         },
     ],
     "mObraIndirectos": [
         {
             "nombre": "Batir",
             "cantidad": 5.5,
-            "unidad": "horas"
+            "unidad": "h"
         }
     ],
-    "costosDirectos": [
-        {
-            "nombre": "Planckado",
-            "cantidad": 4000,
-            "unidad": "watt"
-        }
-    ],
-    "costosIndirectos": [
-        {
-            "nombre": "Lavado",
-            "cantidad": 15000,
-            "unidad": "Li"
-        }
-    ]
   }
 	const sueldoMinimoHora = 425/240
 	
@@ -90,6 +76,18 @@ export const TablaCostos = (props) => {
 			return anterior + calcularSubtotalManoObra(actual);
 		}, 0
 	);
+
+	const nombresUnidades = {
+    kg: "kilos", 
+    lb: "libras", 
+    g: "gramos", 
+    l: "litros", 
+    cm3: "cm cúbicos",
+    h: "horas",
+    min: "munutos",
+    w: "watts", 
+    u: "unidades", 
+  }
 	
 	const totalCosto = subtotalMPD + subtotalMOD + subtotalMPI + subtotalMOI;
 	const pvpTotal = totalCosto * (1 + _datosProducto.margenUtilidad);
@@ -112,10 +110,10 @@ export const TablaCostos = (props) => {
 										{ recurso.nombre}
 									</text>,
 									<text>
-										{ `${recurso.cantidad} ${recurso.unidad}` }
+										{ `${recurso.cantidad} ${nombresUnidades[recurso.unidad]}` }
 									</text>,
 									<text style={{ textAlign: "right" }}>
-										{ dolares(recurso.precio) }
+										{ dolares(recurso.precio * obtenerFactorConversion(recurso.unidad)) }
 									</text>,
 									<text style={{ textAlign: "right" }}>
 										{ dolares(calcularSubtotalMaterial(recurso)) }
@@ -157,13 +155,14 @@ export const TablaCostos = (props) => {
 										{ recurso.nombre}
 									</text>,
 									<text>
-										{ `${recurso.cantidad} ${recurso.unidad}` }
+										{ `${recurso.cantidad} ${nombresUnidades[recurso.unidad]}` }
 									</text>,
 									<text style={{ textAlign: "right" }}>
-										{ dolares(sueldoMinimoHora) }
+										{ dolares(sueldoMinimoHora * obtenerFactorConversion(recurso.unidad)) }
 									</text>,
 									<text style={{ textAlign: "right" }}>
-										{ dolares(calcularSubtotalManoObra(recurso)) }
+										{ dolares(calcularSubtotalManoObra(recurso) 
+										)}
 									</text>,
 									<text style={{ textAlign: "right" }}>
 										{ dolares(calcularSubtotalManoObra(recurso) * _datosProducto.cantidad ) }
@@ -202,10 +201,10 @@ export const TablaCostos = (props) => {
 										{ recurso.nombre}
 									</text>,
 									<text>
-										{ `${recurso.cantidad} ${recurso.unidad}` }
+										{ `${recurso.cantidad} ${nombresUnidades[recurso.unidad]}` }
 									</text>,
 									<text style={{ textAlign: "right" }}>
-										{ dolares(recurso.precio) }
+										{ dolares(recurso.precio * obtenerFactorConversion(recurso.unidad)) }
 									</text>,
 									<text style={{ textAlign: "right" }}>
 										{ dolares(calcularSubtotalMaterial(recurso)) }
@@ -244,10 +243,10 @@ export const TablaCostos = (props) => {
 										{ recurso.nombre}
 									</text>,
 									<text>
-										{ `${recurso.cantidad} ${recurso.unidad}` }
+										{ `${recurso.cantidad} ${nombresUnidades[recurso.unidad]}` }
 									</text>,
 									<text style={{ textAlign: "right" }}>
-										{ dolares(sueldoMinimoHora) }
+										{ dolares(sueldoMinimoHora * obtenerFactorConversion(recurso.unidad)) }
 									</text>,
 									<text style={{ textAlign: "right" }}>
 										{ dolares(calcularSubtotalManoObra(recurso)) }
@@ -312,6 +311,15 @@ export const TablaCostos = (props) => {
 						<text>Margen de utilidad</text>,
 						<text style={{ textAlign: "right" }}>
 							{ `${_datosProducto.margenUtilidad*100} %` }
+						</text>
+					]}
+					textStyle={styles.text}
+				/>
+				<Row 
+					data={[
+						<text>Unidades producidas</text>,
+						<text style={{ textAlign: "right" }}>
+							{ _datosProducto.cantidad }
 						</text>
 					]}
 					textStyle={styles.text}

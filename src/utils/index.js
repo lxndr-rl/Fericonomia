@@ -36,7 +36,7 @@ export const dolares = (cantidad, redondearDigitos = 2) =>
  * @returns Number
  */
 export const calcularSubtotalMaterial = (recurso) => {
-  return recurso.precio * recurso.cantidad;
+  return recurso.precio * recurso.cantidad * obtenerFactorConversion(recurso.unidad)
 };
 
 /**
@@ -54,7 +54,8 @@ export const calcularSubtotalMaterial = (recurso) => {
 export const calcularSubtotalManoObra = (recurso) => {
   // TODO Obtener desde almacenamiento
   const costoHora = 425/240
-  return costoHora * recurso.cantidad * (recurso.cantidadPersonas || 1)
+  return costoHora * recurso.cantidad * (recurso.cantidadPersonas || 1) 
+    * obtenerFactorConversion(recurso.unidad)
 };
 
 /**
@@ -213,8 +214,7 @@ export const calcularSubtotalOtrosIndirectos = (recursos) =>
  * @returns Number
  */
 export const calcularSubtotalDirectoUnitario = (recursos) =>
-  calcularSubtotalMateriasDirectas(recursos) +
-  calcularSubtotalManoObraDirecta(recursos);
+  calcularSubtotalMateriasDirectas(recursos) + calcularSubtotalManoObraDirecta(recursos);
 
 /**
  * @param {{producto: {
@@ -303,6 +303,22 @@ export const calcularCostoTotalUnitario = (producto) =>
 export const calcularPrecioVenta = (producto) =>
   calcularCostoTotalUnitario(producto) * (1 + producto.margenUtilidad);
 
-// TODO Subtotales de costos segú sea. Uno para cada tipo
-// - Directo: Mano obra, materias
-// - Indirecto: Mano obra, materias, otros
+export const obtenerFactorConversion = abreviaturaUnidad => {
+  const factoresConversion = {
+    // Peso
+    kg: 1, 
+    lb: 2.204623, 
+    g: 1000, 
+    // Volumen
+    l: 1, 
+    cm3: 1000,
+    // Tiempo
+    h: 1,
+    min: 1/60,
+    // Servicios básicos
+    w: 1, 
+    // Otros
+    u: 1, 
+  }
+  return factoresConversion[abreviaturaUnidad] || 1
+}
