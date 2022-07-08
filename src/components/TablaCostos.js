@@ -6,11 +6,14 @@ import {
   dolares,
   calcularSubtotalManoObra,
   obtenerFactorConversion,
+  calcularSubtotalServicioBasico,
 } from "../utils";
 
 export const TablaCostos = (props) => {
   const _datosProducto = props.datosProducto;
-  const sueldoMinimoHora = 425 / 240;
+  const sueldoMinimoHora = sessionStorage.getItem("sueldoMin");
+  const valorWattHora = sessionStorage.getItem("valorWattHora");
+  const valorAguaLitro = sessionStorage.getItem("valorAguaLitro");
 
   const subtotalMPD = _datosProducto.mDirectos.reduce(
     (anterior, actual) =>
@@ -35,6 +38,18 @@ export const TablaCostos = (props) => {
     },
     0
   );
+  const subtotalOtrosDirectos = _datosProducto.costosDirecto.reduce(
+    (anterior, actual) => {
+      return anterior + calcularSubtotalServicioBasico(actual) * _datosProducto.cantidad;
+    },
+    0
+  );
+  const subtotalOtrosIndirectos = _datosProducto.costosIndirectos.reduce(
+    (anterior, actual) => {
+      return anterior + calcularSubtotalServicioBasico(actual)
+    },
+    0
+  );
 
   const nombresUnidades = {
     kg: "kilos",
@@ -48,7 +63,8 @@ export const TablaCostos = (props) => {
     u: "unidades",
   };
 
-  const totalCosto = subtotalMPD + subtotalMOD + subtotalMPI + subtotalMOI;
+  const totalCosto = subtotalMPD + subtotalMOD + subtotalMPI + subtotalMOI +subtotalOtrosDirectos
+    +subtotalOtrosIndirectos;
   const pvpTotal = totalCosto * (1 + _datosProducto.margenUtilidad);
   return (
     <View style={styles.container}>
@@ -159,6 +175,60 @@ export const TablaCostos = (props) => {
       </Table>
 
       <View>
+        <Text>Otros costos Directos</Text>
+      </View>
+      <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
+        <Row
+          data={[
+            "Nombre",
+            "Cantidad",
+            "Costo/hora",
+            "Subtotal unitario",
+            "Subtotal",
+          ]}
+          style={styles.head}
+          textStyle={styles.text}
+        />
+        {_datosProducto.costosDirecto.map((recurso) => (
+          <TableWrapper>
+            <Row
+              data={[
+                <Text>{recurso.nombre}</Text>,
+                <Text>
+                  {`${recurso.cantidad} ${nombresUnidades[recurso.unidad]}`}
+                </Text>,
+                <Text style={{ textAlign: "right" }}>
+                  {dolares(
+                    (recurso.unidad === "w" ? valorWattHora : valorAguaLitro) * 
+                      obtenerFactorConversion(recurso.unidad)
+                  )}
+                </Text>,
+                <Text style={{ textAlign: "right" }}>
+                  {dolares(calcularSubtotalServicioBasico(recurso))}
+                </Text>,
+                <Text style={{ textAlign: "right" }}>
+                  {dolares(
+                    calcularSubtotalServicioBasico(recurso) * _datosProducto.cantidad
+                  )}
+                </Text>,
+              ]}
+              textStyle={styles.text}
+            />
+          </TableWrapper>
+        ))}
+        <Row
+          data={[
+            "Subtotal",
+            "",
+            "",
+            "",
+            <Text style={{ textAlign: "right" }}>{dolares(subtotalOtrosDirectos)}</Text>,
+          ]}
+          textStyle={styles.text}
+        />
+      </Table>
+
+      <View>
         <Text>Materias indirectas</Text>
       </View>
       <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
@@ -241,6 +311,53 @@ export const TablaCostos = (props) => {
       </Table>
 
       <View>
+        <Text>Otros costos Indirectos</Text>
+      </View>
+      <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
+        <Row
+          data={[
+            "Nombre",
+            "Cantidad",
+            "Costo/hora",
+            "Subtotal",
+          ]}
+          style={styles.head}
+          textStyle={styles.text}
+        />
+        {_datosProducto.costosIndirectos.map((recurso) => (
+          <TableWrapper>
+            <Row
+              data={[
+                <Text>{recurso.nombre}</Text>,
+                <Text>
+                  {`${recurso.cantidad} ${nombresUnidades[recurso.unidad]}`}
+                </Text>,
+                <Text style={{ textAlign: "right" }}>
+                  {dolares(
+                    (recurso.unidad === "w" ? valorWattHora : valorAguaLitro) * 
+                      obtenerFactorConversion(recurso.unidad)
+                  )}
+                </Text>,
+                <Text style={{ textAlign: "right" }}>
+                  {dolares(calcularSubtotalServicioBasico(recurso))}
+                </Text>,
+              ]}
+              textStyle={styles.text}
+            />
+          </TableWrapper>
+        ))}
+        <Row
+          data={[
+            "Subtotal",
+            "",
+            "",
+            <Text style={{ textAlign: "right" }}>{dolares(subtotalOtrosIndirectos)}</Text>,
+          ]}
+          textStyle={styles.text}
+        />
+      </Table>
+
+      <View>
         <Text>Sumatoria de costos</Text>
       </View>
       <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
@@ -274,6 +391,20 @@ export const TablaCostos = (props) => {
           data={[
             <Text>Mano de Obra Indirecta</Text>,
             <Text style={{ textAlign: "right" }}>{dolares(subtotalMOI)}</Text>,
+          ]}
+          textStyle={styles.text}
+        />
+        <Row
+          data={[
+            <Text>Otros Costos Directos</Text>,
+            <Text style={{ textAlign: "right" }}>{dolares(subtotalOtrosDirectos)}</Text>,
+          ]}
+          textStyle={styles.text}
+        />
+        <Row
+          data={[
+            <Text>Otros Costos Indirectos</Text>,
+            <Text style={{ textAlign: "right" }}>{dolares(subtotalOtrosIndirectos)}</Text>,
           ]}
           textStyle={styles.text}
         />
