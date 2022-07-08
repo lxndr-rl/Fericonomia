@@ -71,23 +71,23 @@ export const TablaCostos = (props) => {
           <TableWrapper>
             <Row
               data={[
-                <text>{recurso.nombre}</text>,
-                <text>
+                <Text>{recurso.nombre}</Text>,
+                <Text>
                   {`${recurso.cantidad} ${nombresUnidades[recurso.unidad]}`}
-                </text>,
-                <text style={{ textAlign: "right" }}>
+                </Text>,
+                <Text style={{ textAlign: "right" }}>
                   {dolares(
                     recurso.precio * obtenerFactorConversion(recurso.unidad)
                   )}
-                </text>,
-                <text style={{ textAlign: "right" }}>
+                </Text>,
+                <Text style={{ textAlign: "right" }}>
                   {dolares(calcularSubtotalMaterial(recurso))}
-                </text>,
-                <text style={{ textAlign: "right" }}>
+                </Text>,
+                <Text style={{ textAlign: "right" }}>
                   {dolares(
                     calcularSubtotalMaterial(recurso) * _datosProducto.cantidad
                   )}
-                </text>,
+                </Text>,
               ]}
               textStyle={styles.text}
             />
@@ -124,23 +124,23 @@ export const TablaCostos = (props) => {
           <TableWrapper>
             <Row
               data={[
-                <text>{recurso.nombre}</text>,
-                <text>
+                <Text>{recurso.nombre}</Text>,
+                <Text>
                   {`${recurso.cantidad} ${nombresUnidades[recurso.unidad]}`}
-                </text>,
-                <text style={{ textAlign: "right" }}>
+                </Text>,
+                <Text style={{ textAlign: "right" }}>
                   {dolares(
                     sueldoMinimoHora * obtenerFactorConversion(recurso.unidad)
                   )}
-                </text>,
-                <text style={{ textAlign: "right" }}>
+                </Text>,
+                <Text style={{ textAlign: "right" }}>
                   {dolares(calcularSubtotalManoObra(recurso))}
-                </text>,
-                <text style={{ textAlign: "right" }}>
+                </Text>,
+                <Text style={{ textAlign: "right" }}>
                   {dolares(
                     calcularSubtotalManoObra(recurso) * _datosProducto.cantidad
                   )}
-                </text>,
+                </Text>,
               ]}
               textStyle={styles.text}
             />
@@ -171,18 +171,18 @@ export const TablaCostos = (props) => {
           <TableWrapper>
             <Row
               data={[
-                <text>{recurso.nombre}</text>,
-                <text>
+                <Text>{recurso.nombre}</Text>,
+                <Text>
                   {`${recurso.cantidad} ${nombresUnidades[recurso.unidad]}`}
-                </text>,
-                <text style={{ textAlign: "right" }}>
+                </Text>,
+                <Text style={{ textAlign: "right" }}>
                   {dolares(
                     recurso.precio * obtenerFactorConversion(recurso.unidad)
                   )}
-                </text>,
-                <text style={{ textAlign: "right" }}>
+                </Text>,
+                <Text style={{ textAlign: "right" }}>
                   {dolares(calcularSubtotalMaterial(recurso))}
-                </text>,
+                </Text>,
               ]}
               textStyle={styles.text}
             />
@@ -212,18 +212,18 @@ export const TablaCostos = (props) => {
           <TableWrapper>
             <Row
               data={[
-                <text>{recurso.nombre}</text>,
-                <text>
+                <Text>{recurso.nombre}</Text>,
+                <Text>
                   {`${recurso.cantidad} ${nombresUnidades[recurso.unidad]}`}
-                </text>,
-                <text style={{ textAlign: "right" }}>
+                </Text>,
+                <Text style={{ textAlign: "right" }}>
                   {dolares(
                     sueldoMinimoHora * obtenerFactorConversion(recurso.unidad)
                   )}
-                </text>,
-                <text style={{ textAlign: "right" }}>
+                </Text>,
+                <Text style={{ textAlign: "right" }}>
                   {dolares(calcularSubtotalManoObra(recurso))}
-                </text>,
+                </Text>,
               ]}
               textStyle={styles.text}
             />
@@ -251,70 +251,70 @@ export const TablaCostos = (props) => {
         />
         <Row
           data={[
-            <text>Materias Primas Directas</text>,
-            <text style={{ textAlign: "right" }}>{dolares(subtotalMPD)}</text>,
+            <Text>Materias Primas Directas</Text>,
+            <Text style={{ textAlign: "right" }}>{dolares(subtotalMPD)}</Text>,
           ]}
           textStyle={styles.text}
         />
         <Row
           data={[
-            <text>Materias Primas Indirecta</text>,
-            <text style={{ textAlign: "right" }}>{dolares(subtotalMPI)}</text>,
+            <Text>Materias Primas Indirecta</Text>,
+            <Text style={{ textAlign: "right" }}>{dolares(subtotalMPI)}</Text>,
           ]}
           textStyle={styles.text}
         />
         <Row
           data={[
-            <text>Mano de Obra Directa</text>,
-            <text style={{ textAlign: "right" }}>{dolares(subtotalMOD)}</text>,
+            <Text>Mano de Obra Directa</Text>,
+            <Text style={{ textAlign: "right" }}>{dolares(subtotalMOD)}</Text>,
           ]}
           textStyle={styles.text}
         />
         <Row
           data={[
-            <text>Mano de Obra Indirecta</text>,
-            <text style={{ textAlign: "right" }}>{dolares(subtotalMOI)}</text>,
+            <Text>Mano de Obra Indirecta</Text>,
+            <Text style={{ textAlign: "right" }}>{dolares(subtotalMOI)}</Text>,
           ]}
           textStyle={styles.text}
         />
         <Row
           data={[
-            <text>Costos Totales</text>,
-            <text style={{ textAlign: "right" }}>{dolares(totalCosto)}</text>,
+            <Text>Costos Totales</Text>,
+            <Text style={{ textAlign: "right" }}>{dolares(totalCosto)}</Text>,
           ]}
           textStyle={styles.text}
         />
         <Row
           data={[
-            <text>Margen de utilidad</text>,
-            <text style={{ textAlign: "right" }}>
+            <Text>Margen de utilidad</Text>,
+            <Text style={{ textAlign: "right" }}>
               {`${_datosProducto.margenUtilidad * 100} %`}
-            </text>,
+            </Text>,
           ]}
           textStyle={styles.text}
         />
         <Row
           data={[
-            <text>Unidades producidas</text>,
-            <text style={{ textAlign: "right" }}>
+            <Text>Unidades producidas</Text>,
+            <Text style={{ textAlign: "right" }}>
               {_datosProducto.cantidad}
-            </text>,
+            </Text>,
           ]}
           textStyle={styles.text}
         />
         <Row
           data={[
-            <text>Precio de venta total</text>,
-            <text style={{ textAlign: "right" }}>{dolares(pvpTotal)}</text>,
+            <Text>Precio de venta total</Text>,
+            <Text style={{ textAlign: "right" }}>{dolares(pvpTotal)}</Text>,
           ]}
           textStyle={styles.text}
         />
         <Row
           data={[
-            <text>Precio de venta unitario</text>,
-            <text style={{ textAlign: "right" }}>
+            <Text>Precio de venta unitario</Text>,
+            <Text style={{ textAlign: "right" }}>
               {dolares(pvpTotal / _datosProducto.cantidad)}
-            </text>,
+            </Text>,
           ]}
           textStyle={styles.text}
         />
