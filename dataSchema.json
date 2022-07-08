@@ -1,9 +1,7 @@
 {
+    "nombreProducto": "Producto 5",
     "personas": [
-        {
-            "nombres": "Ariel Alexander",
-            "apellidos": "Aguayo Alvarez"
-        }
+        "Aguayo Alvarez Ariel"
     ],
     "mDirectos": [
         {
@@ -38,6 +36,7 @@
     "costosDirectos": [
         {
             "nombre": "Planckado",
+            "nombre": "Planchado",
             "cantidad": 4000,
             "unidad": "watt"
         }
@@ -48,5 +47,6 @@
             "cantidad": 15000,
             "unidad": "Li"
         }
-    ]
+    ],
+    "utilidad": 70
 }
