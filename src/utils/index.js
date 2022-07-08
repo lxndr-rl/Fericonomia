@@ -41,6 +41,16 @@ export const calcularSubtotalManoObra = (recurso) => {
   );
 };
 
+export const calcularSubtotalServicioBasico = (recurso) => {
+  const valorWattHora = sessionStorage.getItem("valorWattHora");
+  const valorAguaLitro = sessionStorage.getItem("valorAguaLitro");
+  return (
+    recurso.cantidad *
+    (recurso.unidad === "w" ? valorWattHora : valorAguaLitro) *
+    obtenerFactorConversion(recurso.unidad)
+  );
+};
+
 /**
  * @param {{
  *      tipo: String,
@@ -289,20 +299,9 @@ export const calcularPrecioVenta = (producto) =>
 
 export const obtenerFactorConversion = (abreviaturaUnidad) => {
   const factoresConversion = {
-    // Peso
-    kg: 1,
-    lb: 2.204623,
-    g: 1000,
-    // Volumen
-    l: 1,
-    cm3: 1000,
     // Tiempo
     h: 1,
     min: 1 / 60,
-    // Servicios básicos
-    w: 1,
-    // Otros
-    u: 1,
   };
   return factoresConversion[abreviaturaUnidad] || 1;
 };
