@@ -35,6 +35,7 @@
     ],
     "costosDirectos": [
         {
+            "nombre": "Planckado",
             "nombre": "Planchado",
             "cantidad": 4000,
             "unidad": "watt"
