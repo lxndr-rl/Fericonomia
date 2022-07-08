@@ -33,52 +33,53 @@ const Insercion = ({ navigation }) => {
   const [showTable, setShowTable] = useState(false);
   const [insertedData, setInsertedData] = useState({
     nombreProducto: "",
+    cantidad: 0,
     personas: [],
     mDirectos: [
       {
         nombre: "",
-        cantidad: 0,
-        unidad: "",
+        cantidad: 1,
+        unidad: "l",
         precio: 0,
       },
     ],
     mIndirectos: [
       {
         nombre: "",
-        cantidad: 0,
-        unidad: "",
+        cantidad: 1,
+        unidad: "l",
         precio: 0,
       },
     ],
     mObraDirectos: [
       {
         nombre: "",
-        cantidad: 0,
+        cantidad: 1,
         unidad: "h",
       },
     ],
     mObraIndirectos: [
       {
         nombre: "",
-        cantidad: 0,
+        cantidad: 1,
         unidad: "h",
       },
     ],
     costosDirecto: [
       {
         nombre: "",
-        cantidad: 0,
+        cantidad: 1,
         unidad: "w",
       },
     ],
     costosIndirectos: [
       {
         nombre: "",
-        cantidad: 0,
+        cantidad: 1,
         unidad: "w",
       },
     ],
-    utilidad: 0,
+    margenUtilidad: 0,
   });
 
   useEffect(() => {
@@ -166,6 +167,7 @@ const Insercion = ({ navigation }) => {
             max={1000}
             min={1}
             step={0.1}
+            initialValue={1}
             colorMax={"#f04048"}
             colorMin={"#40c5f4"}
             height={40}
@@ -247,6 +249,7 @@ const Insercion = ({ navigation }) => {
             max={100}
             min={0}
             step={1}
+            initialValue={1}
             colorMax={"#f04048"}
             colorMin={"#40c5f4"}
             height={40}
@@ -330,6 +333,7 @@ const Insercion = ({ navigation }) => {
             step={1}
             colorMax={"#f04048"}
             colorMin={"#40c5f4"}
+            initialValue={1}
             height={40}
             width={100}
             style={{ marginHorizontal: 10 }}
@@ -400,6 +404,7 @@ const Insercion = ({ navigation }) => {
             max={100}
             min={0}
             step={1}
+            initialValue={1}
             colorMax={"#f04048"}
             colorMin={"#40c5f4"}
             height={40}
@@ -471,6 +476,7 @@ const Insercion = ({ navigation }) => {
             key={`is-${j}-costosDirecto`}
             max={100}
             min={0}
+            initialValue={1}
             step={1}
             colorMax={"#f04048"}
             colorMin={"#40c5f4"}
@@ -545,6 +551,7 @@ const Insercion = ({ navigation }) => {
             min={0}
             step={1}
             colorMax={"#f04048"}
+            initialValue={1}
             colorMin={"#40c5f4"}
             height={40}
             width={100}
@@ -894,6 +901,26 @@ const Insercion = ({ navigation }) => {
 
             <View style={{ margin: 20 }}>
               <View>
+                <Text style={styles.text}>
+                  Ingrese la Cantidad de Unidades a Ofrecer
+                </Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder={"Ingrese la Cantidad de Unidades"}
+                  keyboardType={"numeric"}
+                  placeholderTextColor={"gray"}
+                  onChangeText={(text) => {
+                    setInsertedData({
+                      ...insertedData,
+                      cantidad: Number(text),
+                    });
+                  }}
+                />
+              </View>
+            </View>
+
+            <View style={{ margin: 20 }}>
+              <View>
                 <Text style={styles.text}>Utilidad que desea generar</Text>
                 <TextInput
                   style={styles.input}
@@ -903,7 +930,7 @@ const Insercion = ({ navigation }) => {
                   onChangeText={(text) => {
                     setInsertedData({
                       ...insertedData,
-                      porcentajeUtil: text,
+                      margenUtilidad: text,
                     });
                   }}
                 />
