@@ -23,6 +23,12 @@ const Insercion = ({ navigation }) => {
   const [valorWattHora, setValorWattHora] = useState(0);
   const [valorAguaLitro, setValorAguaLitro] = useState(0);
   const [configVisible, setConfigVisible] = useState(false);
+  const [cantidadManoDeObraIndirectos, setCantidadManoDeObraIndirectos] =
+    useState(1);
+  const [cantidadManoDeObraDirectos, setCantidadManoDeObraDirectos] =
+    useState(1);
+  const [cantidadCostosDirectos, setCantidadCostosDirectos] = useState(1);
+  const [cantidadCostosIndirectos, setCantidadCostosIndirectos] = useState(1);
   const [insertedData, setInsertedData] = useState({
     nombreProducto: "",
     personas: [],
@@ -46,28 +52,28 @@ const Insercion = ({ navigation }) => {
       {
         nombre: "",
         cantidad: 0,
-        unidad: "horas",
+        unidad: "h",
       },
     ],
     mObraIndirectos: [
       {
         nombre: "",
         cantidad: 0,
-        unidad: "horas",
+        unidad: "h",
       },
     ],
     costosDirecto: [
       {
         nombre: "",
         cantidad: 0,
-        unidad: "watt",
+        unidad: "w",
       },
     ],
     costosIndirectos: [
       {
         nombre: "",
         cantidad: 0,
-        unidad: "watt",
+        unidad: "w",
       },
     ],
     utilidad: 0,
@@ -283,6 +289,294 @@ const Insercion = ({ navigation }) => {
     return materiales;
   };
 
+  const manoDeObraIndirectosFields = (i) => {
+    if (i <= 0) {
+      setCantidadManoDeObraIndirectos(1);
+      i = 1;
+    }
+    let manoObra = [];
+    for (let j = 1; j <= i; j++) {
+      manoObra.push(
+        <View style={styles.rowView}>
+          <TextInput
+            key={`ti-${j}-manoIndirecto`}
+            style={styles.inputMaterial}
+            placeholder={`Nombre de la actividad ${j}`}
+            placeholderTextColor={"gray"}
+            onChangeText={(text) => {
+              let materialesInd = insertedData.mObraIndirectos;
+              try {
+                materialesInd[j - 1].nombre = text;
+              } catch {
+                materialesInd.push({
+                  nombre: text,
+                  cantidad: 0,
+                  unidad: "",
+                  precio: 0,
+                });
+              }
+              setInsertedData({
+                ...insertedData,
+                mObraIndirectos: materialesInd,
+              });
+            }}
+          />
+          <InputSpinner
+            key={`is-${j}-manoIndirecto`}
+            max={100}
+            min={0}
+            step={1}
+            colorMax={"#f04048"}
+            colorMin={"#40c5f4"}
+            height={40}
+            width={100}
+            style={{ marginHorizontal: 10 }}
+            buttonStyle={{ width: 20, height: 20 }}
+            onChange={(value) => {
+              let materialesInd = insertedData.mObraIndirectos;
+              materialesInd[j - 1].cantidad = value;
+              setInsertedData({
+                ...insertedData,
+                mObraIndirectos: materialesInd,
+              });
+            }}
+          />
+          <Picker
+            key={`p-${j}-manoIndirecto`}
+            onValueChange={(itemValue, itemIndex) => {
+              let materialesInd = insertedData.mObraIndirectos;
+              materialesInd[j - 1].unidad = itemValue;
+              setInsertedData({
+                ...insertedData,
+                mObraIndirectos: materialesInd,
+              });
+            }}
+          >
+            <Picker.Item label="Horas" value="h" />
+            <Picker.Item label="Minutos" value="min" />
+          </Picker>
+        </View>
+      );
+    }
+    return manoObra;
+  };
+
+  const manoDeObraDirectosFields = (i) => {
+    if (i <= 0) {
+      setCantidadManoDeObraDirectos(1);
+      i = 1;
+    }
+    let manoObra = [];
+    for (let j = 1; j <= i; j++) {
+      manoObra.push(
+        <View style={styles.rowView}>
+          <TextInput
+            key={`ti-${j}-manoDirecto`}
+            style={styles.inputMaterial}
+            placeholder={`Nombre de la actividad ${j}`}
+            placeholderTextColor={"gray"}
+            onChangeText={(text) => {
+              let materialesInd = insertedData.mObraDirectos;
+              try {
+                materialesInd[j - 1].nombre = text;
+              } catch {
+                materialesInd.push({
+                  nombre: text,
+                  cantidad: 0,
+                  unidad: "",
+                  precio: 0,
+                });
+              }
+              setInsertedData({
+                ...insertedData,
+                mObraDirectos: materialesInd,
+              });
+            }}
+          />
+          <InputSpinner
+            key={`is-${j}-manoDirecto`}
+            max={100}
+            min={0}
+            step={1}
+            colorMax={"#f04048"}
+            colorMin={"#40c5f4"}
+            height={40}
+            width={100}
+            style={{ marginHorizontal: 10 }}
+            buttonStyle={{ width: 20, height: 20 }}
+            onChange={(value) => {
+              let materialesInd = insertedData.mObraDirectos;
+              materialesInd[j - 1].cantidad = value;
+              setInsertedData({
+                ...insertedData,
+                mObraDirectos: materialesInd,
+              });
+            }}
+          />
+          <Picker
+            key={`p-${j}-manoDirecto`}
+            onValueChange={(itemValue, itemIndex) => {
+              let materialesInd = insertedData.mObraDirectos;
+              materialesInd[j - 1].unidad = itemValue;
+              setInsertedData({
+                ...insertedData,
+                mObraDirectos: materialesInd,
+              });
+            }}
+          >
+            <Picker.Item label="Horas" value="h" />
+            <Picker.Item label="Minutos" value="min" />
+          </Picker>
+        </View>
+      );
+    }
+    return manoObra;
+  };
+
+  const costosDirectosFields = (i) => {
+    if (i <= 0) {
+      setCantidadCostosDirectos(1);
+      i = 1;
+    }
+    let costos = [];
+    for (let j = 1; j <= i; j++) {
+      costos.push(
+        <View style={styles.rowView}>
+          <TextInput
+            key={`ti-${j}-costosDirecto`}
+            style={styles.inputMaterial}
+            placeholder={`Nombre de la actividad ${j}`}
+            placeholderTextColor={"gray"}
+            onChangeText={(text) => {
+              let materialesInd = insertedData.costosDirecto;
+              try {
+                materialesInd[j - 1].nombre = text;
+              } catch {
+                materialesInd.push({
+                  nombre: text,
+                  cantidad: 0,
+                  unidad: "",
+                  precio: 0,
+                });
+              }
+              setInsertedData({
+                ...insertedData,
+                costosDirecto: materialesInd,
+              });
+            }}
+          />
+          <InputSpinner
+            key={`is-${j}-costosDirecto`}
+            max={100}
+            min={0}
+            step={1}
+            colorMax={"#f04048"}
+            colorMin={"#40c5f4"}
+            height={40}
+            width={100}
+            style={{ marginHorizontal: 10 }}
+            buttonStyle={{ width: 20, height: 20 }}
+            onChange={(value) => {
+              let materialesInd = insertedData.costosDirecto;
+              materialesInd[j - 1].cantidad = value;
+              setInsertedData({
+                ...insertedData,
+                costosDirecto: materialesInd,
+              });
+            }}
+          />
+          <Picker
+            key={`p-${j}-costosDirecto`}
+            onValueChange={(itemValue, itemIndex) => {
+              let materialesInd = insertedData.costosDirecto;
+              materialesInd[j - 1].unidad = itemValue;
+              setInsertedData({
+                ...insertedData,
+                costosDirecto: materialesInd,
+              });
+            }}
+          >
+            <Picker.Item label="Watt" value="w" />
+            <Picker.Item label="Litros" value="l" />
+          </Picker>
+        </View>
+      );
+    }
+    return costos;
+  };
+
+  const costosIndirectosFields = (i) => {
+    if (i <= 0) {
+      setCantidadCostosIndirectos(1);
+      i = 1;
+    }
+    let costos = [];
+    for (let j = 1; j <= i; j++) {
+      costos.push(
+        <View style={styles.rowView}>
+          <TextInput
+            key={`ti-${j}-costosIndirecto`}
+            style={styles.inputMaterial}
+            placeholder={`Nombre de la actividad ${j}`}
+            placeholderTextColor={"gray"}
+            onChangeText={(text) => {
+              let materialesInd = insertedData.costosIndirectos;
+              try {
+                materialesInd[j - 1].nombre = text;
+              } catch {
+                materialesInd.push({
+                  nombre: text,
+                  cantidad: 0,
+                  unidad: "",
+                  precio: 0,
+                });
+              }
+              setInsertedData({
+                ...insertedData,
+                costosIndirectos: materialesInd,
+              });
+            }}
+          />
+          <InputSpinner
+            key={`is-${j}-costosIndirecto`}
+            max={100}
+            min={0}
+            step={1}
+            colorMax={"#f04048"}
+            colorMin={"#40c5f4"}
+            height={40}
+            width={100}
+            style={{ marginHorizontal: 10 }}
+            buttonStyle={{ width: 20, height: 20 }}
+            onChange={(value) => {
+              let materialesInd = insertedData.costosIndirectos;
+              materialesInd[j - 1].cantidad = value;
+              setInsertedData({
+                ...insertedData,
+                costosIndirectos: materialesInd,
+              });
+            }}
+          />
+          <Picker
+            key={`p-${j}-costosIndirecto`}
+            onValueChange={(itemValue, itemIndex) => {
+              let materialesInd = insertedData.costosIndirectos;
+              materialesInd[j - 1].unidad = itemValue;
+              setInsertedData({
+                ...insertedData,
+                costosIndirectos: materialesInd,
+              });
+            }}
+          >
+            <Picker.Item label="Watt" value="w" />
+            <Picker.Item label="Litros" value="l" />
+          </Picker>
+        </View>
+      );
+    }
+    return costos;
+  };
+
   const completarIngreso = () => {
     let productoValido;
     try {
@@ -298,6 +592,45 @@ const Insercion = ({ navigation }) => {
     } catch {
       personaValida = false;
     }
+    let materDirValido;
+    try {
+      materDirValido =
+        insertedData.mObraDirectos.length === 0 ||
+        !/^[a-zA-Z]+$/.test(insertedData.mObraDirectos[0].nombre) ||
+        insertedData.mObraDirectos[0].cantidad === 0 ||
+        insertedData.mObraDirectos[0].precio === 0;
+    } catch {
+      materDirValido = false;
+    }
+    let materIndValido;
+    try {
+      materIndValido =
+        insertedData.mObraIndirectos.length === 0 ||
+        !/^[a-zA-Z]+$/.test(insertedData.mObraIndirectos[0].nombre) ||
+        insertedData.mObraIndirectos[0].cantidad === 0 ||
+        insertedData.mObraIndirectos[0].precio === 0;
+    } catch {
+      materIndValido = false;
+    }
+    let costosDirValido;
+    try {
+      costosDirValido =
+        insertedData.costosDirecto.length === 0 ||
+        !/^[a-zA-Z]+$/.test(insertedData.costosDirecto[0].nombre) ||
+        insertedData.costosDirecto[0].cantidad === 0;
+    } catch {
+      costosDirValido = false;
+    }
+    let costosIndValido;
+    try {
+      costosIndValido =
+        insertedData.costosIndirectos.length === 0 ||
+        !/^[a-zA-Z]+$/.test(insertedData.costosIndirectos[0].nombre) ||
+        insertedData.costosIndirectos[0].cantidad === 0;
+    } catch {
+      costosIndValido = false;
+    }
+
     if (!productoValido) {
       alert("Ingrese el nombre del producto");
       return;
@@ -307,9 +640,24 @@ const Insercion = ({ navigation }) => {
       alert("Ingrese al menos un nombre válido de recursos humanos");
       return;
     }
+    if (!materDirValido) {
+      alert("Ingrese al menos un material directo válido");
+      return;
+    }
+    if (!materIndValido) {
+      alert("Ingrese al menos un material indirecto válido");
+      return;
+    }
+    if (!costosDirValido) {
+      alert("Ingrese al menos un costo directo válido");
+      return;
+    }
+    if (!costosIndValido) {
+      alert("Ingrese al menos un costo indirecto válido");
+      return;
+    }
     setFormsVisible(false);
     alert("Proceso Creado");
-    alert(JSON.stringify(insertedData));
     sessionStorage.setItem("insertedData", JSON.stringify(insertedData));
   };
 
@@ -419,6 +767,129 @@ const Insercion = ({ navigation }) => {
               <View>
                 {materialesIndirectosFields(cantidadMaterialesIndirectos)}
               </View>
+            </View>
+
+            <View style={{ margin: 20 }}>
+              <View style={styles.rowView}>
+                <TouchableOpacity
+                  style={styles.buttonAD}
+                  onPress={() => {
+                    setCantidadManoDeObraDirectos(
+                      cantidadManoDeObraDirectos - 1
+                    );
+                  }}
+                >
+                  <Text>
+                    <FontAwesome5 name="minus" size={20} color="black" />
+                  </Text>
+                </TouchableOpacity>
+                <Text style={styles.text}>Mano de Obra Directa</Text>
+                <TouchableOpacity
+                  style={styles.buttonAD}
+                  onPress={() => {
+                    setCantidadManoDeObraDirectos(
+                      cantidadManoDeObraDirectos + 1
+                    );
+                  }}
+                >
+                  <Text>
+                    <FontAwesome5 name="plus" size={20} color="black" />
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                {manoDeObraDirectosFields(cantidadManoDeObraDirectos)}
+              </View>
+            </View>
+
+            <View style={{ margin: 20 }}>
+              <View style={styles.rowView}>
+                <TouchableOpacity
+                  style={styles.buttonAD}
+                  onPress={() => {
+                    setCantidadManoDeObraIndirectos(
+                      cantidadManoDeObraIndirectos - 1
+                    );
+                  }}
+                >
+                  <Text>
+                    <FontAwesome5 name="minus" size={20} color="black" />
+                  </Text>
+                </TouchableOpacity>
+                <Text style={styles.text}>Mano de Obra Indirecta</Text>
+                <TouchableOpacity
+                  style={styles.buttonAD}
+                  onPress={() => {
+                    setCantidadManoDeObraIndirectos(
+                      cantidadManoDeObraIndirectos + 1
+                    );
+                  }}
+                >
+                  <Text>
+                    <FontAwesome5 name="plus" size={20} color="black" />
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                {manoDeObraIndirectosFields(cantidadManoDeObraIndirectos)}
+              </View>
+            </View>
+
+            <View style={{ margin: 20 }}>
+              <View style={styles.rowView}>
+                <TouchableOpacity
+                  style={styles.buttonAD}
+                  onPress={() => {
+                    setCantidadCostosDirectos(cantidadCostosDirectos - 1);
+                  }}
+                >
+                  <Text>
+                    <FontAwesome5 name="minus" size={20} color="black" />
+                  </Text>
+                </TouchableOpacity>
+                <Text style={styles.text}>Costos Directos</Text>
+                <TouchableOpacity
+                  style={styles.buttonAD}
+                  onPress={() => {
+                    setCantidadCostosDirectos(cantidadCostosDirectos + 1);
+                  }}
+                >
+                  <Text>
+                    <FontAwesome5 name="plus" size={20} color="black" />
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View>{costosDirectosFields(cantidadCostosDirectos)}</View>
+            </View>
+
+            <View style={{ margin: 20 }}>
+              <View style={styles.rowView}>
+                <TouchableOpacity
+                  style={styles.buttonAD}
+                  onPress={() => {
+                    setCantidadCostosIndirectos(cantidadCostosIndirectos - 1);
+                  }}
+                >
+                  <Text>
+                    <FontAwesome5 name="minus" size={20} color="black" />
+                  </Text>
+                </TouchableOpacity>
+                <Text style={styles.text}>Costos Indirectos</Text>
+                <TouchableOpacity
+                  style={styles.buttonAD}
+                  onPress={() => {
+                    setCantidadCostosIndirectos(cantidadCostosIndirectos + 1);
+                  }}
+                >
+                  <Text>
+                    <FontAwesome5 name="plus" size={20} color="black" />
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View>{costosIndirectosFields(cantidadCostosIndirectos)}</View>
+            </View>
+
+            <View style={{ margin: 20 }}>
               <View>
                 <Text style={styles.text}>Utilidad que desea generar</Text>
                 <TextInput
